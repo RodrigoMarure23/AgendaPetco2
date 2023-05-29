@@ -2,12 +2,9 @@ import React, { useState } from "react";
 import "../styles/index.css";
 import { Outlet, useNavigate } from "react-router-dom";
 import { useShopContext } from "../context/ShopContext";
-import SweetAlert from "sweetalert2"
 const Agenda = () => {
   const {setTextoRuta}=useShopContext()
-  // useState(()=>{
-    
-  // },[])
+ 
   const {infoTiendaGlobal}=useShopContext()
   const navigate = useNavigate();
   const [componenteActivo,setComponenteActivo]=useState("A")
@@ -29,7 +26,6 @@ const Agenda = () => {
             handleClick("A")
             setTextoRuta("Agenda")
             }}
-              // className="btn"
               
             >
               Agenda

@@ -1,302 +1,110 @@
-import React, { useEffect, useState } from "react";
-import "../styles/index.css"
-import Swal from "sweetalert2";
-import { useShopContext } from '../context/ShopContext'
-const daysOfWeek = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"];
+import React, { useState } from 'react';
 
 const Calendar = () => {
-  const [diaSeleccionado,setDiaSeleccionado]=useState(null)
- const startDay2=new Date()
-  const [startDay, setStartDay] = useState(startDay2);
-  const [mostrarFormulario,setMostrarFormulario]=useState(false)
-  const [dia,setDia]=useState(null)
-  const [hora,setHora]=useState(null)
-  const [descanso,setDescanso]=useState(false)
-  const [valor,setValor]=useState(false)
-  const {empleados,setEmpleados}=useShopContext()
-  const [empleadoIndex,setEmpleadoIndex]=useState()
-  const [i,setI] = useState()
-  const [resultTime, setResultTime] = useState();
-  const [fechaAux,SetFechaAux]=useState()
-  const[fechaSeleccionada,setFechaSeleccionada]=useState()
-  const handleChange = (empleadoIndex, diaIndex, value,hora) => {
-    // 
-    if(!hora && valor==false){
-      Swal.fire(
-        'Error!',
-        'Ingresa una hora o define si es descanso!',
-        'error'
-    )
-    const updatedEmpleados = [...empleados];
-    updatedEmpleados[empleadoIndex].horarios[diaIndex] = "";
-    setEmpleados(updatedEmpleados)
-    }
-    if(!value && !hora){
-    const updatedEmpleados = [...empleados];
-    updatedEmpleados[empleadoIndex].horarios[diaIndex] = value + hora;
-    setEmpleados(updatedEmpleados);
-    }
-    if(hora=="Descanso" && value){
-      
-      if(empleados[empleadoIndex].descanso==true){
-        Swal.fire(
-          'Error!',
-          'Ya se a registrado un dia de Descanso!',
-          'error'
-      )
-      return
-    }
-    const updatedEmpleados = [...empleados];
-    updatedEmpleados[empleadoIndex].horarios[diaIndex] = value + "//"+ hora ;
-    updatedEmpleados[empleadoIndex].descanso=true;
-    
-    setEmpleados(updatedEmpleados);
-    
-    }
-    if(value && hora && hora!="Descanso" ){
-    const updatedEmpleados = [...empleados];
-    updatedEmpleados[empleadoIndex].horarios[diaIndex] = value + "//"+ hora + "-"+ resultTime;
-    setEmpleados(updatedEmpleados);
-    }
-    
+  const [startDay, setStartDay] = useState(new Date());
+  const [selectedDate, setSelectedDate] = useState(null);
+  const [event, setEvent] = useState('');
+  const [events, setEvents] = useState([]);
+  const [empleados,setEmpleados]=useState([
+    {nombre:"Rodrigo Marure Sanchez",imagen:"../src/assets/ad.png",horarios:["22 may 2023//Descanso","23 may 2023//00:00-09:00","24 may 2023//00:00-09:00","","26 may 2023//00:00-09:00","",""],descanso:true,incidencia:["Permiso sin Gose de Sueldo--15 may 2023","","","","","",""]},
+    {nombre:"Sanchez Rodrigo Marure", imagen:"",horarios:["22 may 2023//Descanso","","","","","",""],descanso:true,incidencia:["","","","","","",""]},
+    {nombre:"Lizbeth Franco Llana", imagen:"../src/assets/caramujer.png",horarios:["","","","","","",""],descanso:"",incidencia:["","","","","","",""]},
+    {nombre:"Messi Messi messi", gerente:true,imagen:"../src/assets/mesi.png",horarios:["22 may 2023//Descanso","23 may 2023//00:00-09:00","","25 may 2023//00:00-09:00","","",""],descanso:true,incidencia:["","","","","","",""]},
+    {nombre:"Will Smith ", imagen:"../src/assets/willsmit.png",horarios:["","","","","","",""],descanso:"",incidencia:["","","","","","",""]},
+    {nombre:"Will Smith2 ", imagen:"../src/assets/willsmit.png",horarios:["22 may 2023//00:00-09:00","","","","","",""],descanso:"",incidencia:["Permiso sin Gose de Sueldo--15 may 2023","Permiso sin Gose de Sueldo--16 may 2023","Permiso sin Gose de Sueldo--17 may 2023","Permiso sin Gose de Sueldo--18 may 2023","Permiso sin Gose de Sueldo--19 may 2023","Permiso sin Gose de Sueldo--20 may 2023","Permiso sin Gose de Sueldo--21 may 2023"]},
+    {nombre:"empleado imaginario 4 ", imagen:"",horarios:["","","","","","",""],descanso:"",incidencia:["","","","","","",""]},
+    {nombre:"Will Smith3 ", imagen:"../src/assets/cara.png",horarios:["22 may 2023//00:00-09:00","","","","","",""],descanso:"",incidencia:["","","","","","",""]},
+    {nombre:"empleado imaginario 2 ", imagen:"../src/assets/cara4.png",horarios:["","","","","","",""],descanso:"",incidencia:["","","","","","",""]},
+    {nombre:"anonima sanchez ", imagen:"",horarios:["","","","","","",""],descanso:"",incidencia:["","","","","","",""]},
+  ])
+
+  const weekdays = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo'];
+
+  const handleClickDay = (date) => {
+    console.log("date: ",date)
+    setSelectedDate(date);
   };
-  const [mostrarBotonEntrada,setMostrarBotonEntrada]=useState(true)
-  const [inputTime,setInputTime]=useState(false)
-  const mostrarFormularioHandler = (e, day) => {
-    e.preventDefault();
-    setDia(formatDate(day));
-    setMostrarFormulario(true);
-    setDiaSeleccionado(day.getDate());
-    setFechaSeleccionada(formatDate(day)); // Guardar la fecha seleccionada
-    document.getElementById("botonGuardar").style.display = "none";
+
+  const handleSaveEvent = () => {
+    if (selectedDate && event) {
+      const newEvent = { date: selectedDate, event };
+      setEvents([...events, newEvent]);
+      setSelectedDate(null);
+      setEvent('');
+    }
   };
-  
-  const [menos,setMenos]=useState(0)
-  const [mas,setMas]=useState(0)
+
+  const handleCancelEvent = () => {
+    setSelectedDate(null);
+    setEvent('');
+  };
+
   const setPrevWeek = () => {
     const newDate = new Date(startDay);
     newDate.setDate(startDay.getDate() - 7);
     setStartDay(newDate);
-
   };
-  
+
   const setNextWeek = () => {
     const newDate = new Date(startDay);
     newDate.setDate(startDay.getDate() + 7);
     setStartDay(newDate);
-   
-  
   };
 
-  const getDaysOfWeek = () => {
-    const days = [];
-    const startDate = new Date(startDay);
-    startDate.setDate(startDate.getDate() - startDate.getDay() + 1); // Cambiar el inicio de la semana al lunes
+  const renderCalendar = () => {
+    const calendar = [];
+    const currentDate = new Date(startDay);
+
     for (let i = 0; i < 7; i++) {
-      const date = new Date(startDate);
-      date.setDate(startDate.getDate() + i);
-      days.push(date);
+      const date = new Date(currentDate);
+      const isToday = date.toDateString() === new Date().toDateString();
+      const isEventDate = events.some((event) => event.date.toDateString() === date.toDateString());
+
+      calendar.push(
+        <div
+          key={i}
+          style={{border:"solid", width:"auto"}}
+          className={`calendar-day ${isToday ? 'today' : ''} ${isEventDate ? 'event-date' : ''}`}
+          onClick={() => handleClickDay(date)}
+        >
+          <div className="date">{date.getDate()}</div>
+          <div className="event-marker">{isEventDate ? '•' : ''}</div>
+        </div>
+      );
+
+      currentDate.setDate(currentDate.getDate() + 1);
     }
-    return days;
+
+    return calendar;
   };
 
-  
-  const formatDate = (date) => {
-    const options = {  month: "short", day: "numeric" , year:"numeric"};
-    return new Intl.DateTimeFormat("es-MX", options).format(date);
-  };
-
-  const days = getDaysOfWeek();
-  
-  function validarMinutos(event) {
-    const input = event.target;
-    const timeValue = input.value;
-  
-    // Obtener los minutos ingresados por el usuario
-    const minutos = timeValue.slice(3, 5);
-  
-    // Validar si los minutos son diferentes de '00' y '30'
-    if (minutos !== '00' && minutos !== '30') {
-      // Modificar los minutos al valor más cercano ('00' o '30')
-      const nuevoValor = timeValue.slice(0, 3) + (minutos < '30' ? '00' : '30');
-      input.value = nuevoValor;
-      setHora(nuevoValor)
-    }
-    
-  }
-  const sumarHoras = () => {
-    const [horas, minutos] = hora.split(":");
-    const horasInt = parseInt(horas);
-    const minutosInt = parseInt(minutos);
-
-    let horaSumada = horasInt + 9;
-    let minSumados = minutosInt;
-
-    console.log("hora:", horas)
-    console.log("minutos:", minutos)
-    if (horaSumada >= 24) {
-      horaSumada -= 24;
-    }
-   
-
-    const horaFinalStr = `${horaSumada.toString().padStart(2, "0")}:${minSumados.toString().padStart(2, "0")}`;
-    setResultTime(horaFinalStr);
-    console.log("horafinal:",horaFinalStr)
-  };
-  useEffect(()=>{
-    setDiaSeleccionado(true)
-    // console.log("mostrarBoton: ",mostrarBotonEntrada);
-    console.log("empleados: ",empleados);
-    setDia(true)
-
-    
-   
-  },[diaSeleccionado,resultTime,descanso])
   return (
-    <div className="calendar">
-      <div className="header">
-        <img onClick={()=>{setPrevWeek()
-        setMenos(menos-1)
-        setMas(mas-1)}} style={{display:menos==-2?"none":""}} className="imgflecha izq" src="../src/assets/anterior.png" alt="menos" />
-        <p className="semText">{`Semana del ${formatDate(days[0])} al ${formatDate(days[6])}`}</p>
-        <img onClick={()=>{setNextWeek()
-        setMenos(menos+1)
-        setMas(mas+1)}} style={{display:mas==2?"none":""}} className="imgflecha der" src="../src/assets/proximo.png" alt="mas" />
+    <div style={{border:"solid", width:"auto", display:"inline-flex"}} className="calendar">
+      <div className="calendar-header">
+        <button onClick={setPrevWeek}>Previous Week</button>
+        <button onClick={setNextWeek}>Next Week</button>
       </div>
-      <table className="tabla">
-        <thead>
-          <tr>
-            <th>Nombre de Empleado</th>
-            {days.map((day, i) => (
-              <th key={i}>{daysOfWeek[i]+" "}
-              {day.getDate()}
-              </th>
-            ))}
-          </tr>
-        </thead>
-        <tbody className="">
-        {/* validacion para empleados de la bd */}
-        {empleados.map((empleado, empleadoIndex) => (
-  <tr key={empleadoIndex} className="borderTable2">
-    <td>
-      <p>{empleado.nombre}</p>
-    </td>
-    {days.map((day, i) => (
-      <td
-      onClick={(e) => {
-          SetFechaAux(empleado.horarios[i].split("//")[0]);
-          setEmpleadoIndex(empleadoIndex);
-          setHora(hora);
-          setI(i);
-          mostrarFormularioHandler(e, day);
-          
-
-          console.log("dia:", formatDate(day));
-        }}
-        id="celdaInfo"
-        className={empleado.horarios[i] ? "boderTable sinfondo" : "borderTable fondomas"}
-        key={i}
-      >
-        <div id="divCelda">
-          {formatDate(day) === fechaSeleccionada && (
-           fechaAux===formatDate(day)? <span style={{ height: "100px" }}>{empleado.horarios[i].split("//")[1]}</span>:null
-          )}
+      <div style={{border:"solid", width:"auto"}} className="calendar-weekdays">
+        {weekdays.map((day) => (
+          <div style={{border:"solid", width:"auto"}} key={day} className="weekday">{day}</div>
+        ))}
+      </div>
+      <div style={{border:"solid", width:"auto"}} className="calendar-days">{renderCalendar()}</div>
+      {selectedDate && (
+        <div className="event-form">
+          <div className="event-date">{selectedDate.toLocaleDateString()}</div>
+          <input
+            type="text"
+            placeholder="Enter event description"
+            value={event}
+            onChange={(e) => setEvent(e.target.value)}
+          />
+          <div className="event-buttons">
+            <button onClick={handleSaveEvent}>Save</button>
+            <button onClick={handleCancelEvent}>Cancel</button>
+          </div>
         </div>
-      </td>
-    ))}
-  </tr>
-))}
-          
-          
-        </tbody>
-      </table>
-      {/* validacion para mostrar formulario */}
-       {
-                
-
-          mostrarFormulario&&(
-            <div className="formularioHorario">
-            <div>
-              <form className="Formulario">
-                <div className="centrar">
-                  <div>
-                    <h1 style={{color:"#0304f5"}}>Horario</h1>
-                  <div className="inLine">
-                    <label>Nombre:  </label> <p>{empleados[empleadoIndex].nombre}</p>
-                  </div>
-                 
-                 <div className="inLine">
-                  <label>Fecha</label><label>{dia}</label>
-                 </div>
-                  
-                  <div className="inLine">
-                  <label>Descanso</label><input value={inputTime} onClick={(e)=>{console.log("valor:  ", e.target.value),setValor(true)
-                                                                                              }}  type="checkbox" onChange={(e)=>{setMostrarBotonEntrada(!mostrarBotonEntrada)
-                                                                                                                                                                    setInputTime(!inputTime)
-                                                                                                                                                                    
-                  
-                  // if(e.target){
-                  //   console.log("botonDescanso: ",mostrarBotonEntrada);
-                  // }
-                }}
-                  />
-                  </div>
-                
-                  <div style={{display:mostrarBotonEntrada?"block":"none"}} className="inLine">
-                    <label>Hora Entrada</label><input  id="horarioInput"  type="time" onChange={(e)=>{setHora(e.target.value)
-                                                                                                      sumarHoras()
-                                                                                                validarMinutos(e)}} step="1800" />
-                  </div>
-                  
-                </div>
-                
-                <div className="inLine">
-                
-                <button className="btn2" onClick={(e) =>{
-                  e.preventDefault()
-                  setMostrarBotonEntrada(true)
-                  setMostrarFormulario(false)
-                  document.getElementById("botonGuardar").style.display="block"
-                  const copy2=[...empleados];
-                  copy2[empleadoIndex].horarios[i]="";
-                  setEmpleados(copy2)
-                  setHora()
-                }}>Cancelar</button>
-                <button className="btn" type="submit" onClick={(e)=>{
-                  e.preventDefault()
-                  document.getElementById("botonGuardar").style.display="inline"
-                  setMostrarBotonEntrada(true)
-                  setMostrarFormulario(false)
-                  console.log("hora: ",hora);
-                  setHora()
-                  setValor(false)
-                  if(descanso===true){
-                    console.log("ya existe un dia de descanso")
-                  }
-                  if(valor==false){
-                    
-                    handleChange(empleadoIndex,i,dia,hora);
-                    sumarHoras()
-                  }
-                  if(valor==true){
-                    
-                    handleChange(empleadoIndex,i,dia,"Descanso");
-                  }
-                  }
-                  // document.getElementById("botonMas").style.display="none"
-                  
-              }>Guardar</button>
-                </div>
-                </div>
-                
-                
-              </form>
-            </div>
-        </div>
-          )
-        }
-    
-        <button id="botonGuardar" className="btn btn-primary botonGuardar" >Guardar</button>
+      )}
     </div>
   );
 };

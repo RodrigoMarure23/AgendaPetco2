@@ -45,7 +45,7 @@ const Incidencias = () => {
     // };
     const [empleadoIndex,setEmpleadoIndex]=useState()
     const [i,setI]=useState()
-    const fechaSemanaPasada=startDay2.setDate(startDay2.getDate()-7) //seteamos la fecha de la semana pasada
+    const fechaSemanaPasada=startDay2.setDate(startDay2.getDate()) //seteamos la fecha de la semana pasada
     const mostrarFormularioHandler = (e,day) => {
     e.preventDefault();
     setDiaSeleccionado(day.getDate())
@@ -116,7 +116,7 @@ const Incidencias = () => {
             setMas(mas-1)
             }}
             
-          style={{display:menos==-3?"none":""}}
+          style={{display:menos==-2?"none":""}}
           className="imgflecha izq"
           src="../src/assets/anterior.png"
           alt="menos"
@@ -128,7 +128,7 @@ const Incidencias = () => {
           onClick={()=>{setNextWeek()
             setMenos(menos+1)
             setMas(mas+1)
-            }} style={{display:mas==1?"none":""}}
+            }} style={{display:mas==0?"none":""}}
           className="imgflecha der"
           src="../src/assets/proximo.png"
           alt="mas"

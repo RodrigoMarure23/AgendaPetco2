@@ -154,11 +154,11 @@ const Calendar = () => {
       <div className="header">
         <img onClick={()=>{setPrevWeek()
         setMenos(menos-1)
-        setMas(mas-1)}} style={{display:menos==-2?"none":""}} className="imgflecha izq" src="../src/assets/anterior.png" alt="menos" />
+        setMas(mas-1)}} style={{display:menos==-1?"none":""}} className="imgflecha izq" src="../src/assets/anterior.png" alt="menos" />
         <p className="semText">{`Semana del ${formatDate(days[0])} al ${formatDate(days[6])}`}</p>
         <img onClick={()=>{setNextWeek()
         setMenos(menos+1)
-        setMas(mas+1)}} style={{display:mas==2?"none":""}} className="imgflecha der" src="../src/assets/proximo.png" alt="mas" />
+        setMas(mas+1)}} style={{display:mas==1?"none":""}} className="imgflecha der" src="../src/assets/proximo.png" alt="mas" />
       </div>
       <table className="tabla">
         <thead>

@@ -1,23 +1,49 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../styles/index.css";
 import { Outlet, useNavigate } from "react-router-dom";
 import { useShopContext } from "../context/ShopContext";
+import axios from "axios";
+import Swal from "sweetalert2"
 const Agenda = () => {
   const {setTextoRuta}=useShopContext()
- 
-  const {infoTiendaGlobal}=useShopContext()
+  const {numeroEmpleado}=useShopContext()
   const navigate = useNavigate();
   const [componenteActivo,setComponenteActivo]=useState("A")
+  const [textoTienda,setTextoTienda] = useState(null)
+ 
+  useEffect(()=>{
+  getInfoData()
+},[])
   const handleClick=(componente)=>{
     setComponenteActivo(componente)
   }
+  const getInfoData=async()=>{
+    try {
+      const res = await axios.post('https://app.petco.com.mx/recuperaEmpleado', { noEmpleado:localStorage.numeroEmpleado }, {headers:{"x-api-pe-wss": "681ae67106810684b039e48aa9aa2c6d440ef1867e71f96bb98515a104c77c5b",Authorization: `Bearer ${localStorage.token}` 
+    }})
+      const user = res.data
+      console.log("RepuestapetcoAgenda: ",user.data)
+      setTextoTienda(user.data.textoSucursal)
+      Swal.fire('Success!',
+      'informacion de usuario recuperada correctamente',
+      'success')
+    } catch (error) {
+      console.log("Error!",error)
+      Swal.fire('Error!',
+                  'Error al recuperar informacion del usuario',
+                  'error')
+    }
+  }
 
   return (
-    <div className="Border">
-      <div className="NBorder">
+    <div className="Border" 
+  >
+      <div className="NBorder" >
         <div className="TextoDashboard">
+
           <p style={{ fontWeight: "bold", marginLeft: "5px" }}>
-            {infoTiendaGlobal}
+            Tienda Número: {localStorage.getItem("numeroTienda")}
+            <span style={{marginLeft:"10px"}}>-{textoTienda}</span>
           </p>
           <div className="gap">
             <button id="boton1"
@@ -53,7 +79,7 @@ const Agenda = () => {
           </div>
         </div>
 
-        <div className="NBorder">
+        <div className=" ">
           <Outlet />
         </div>
       </div>

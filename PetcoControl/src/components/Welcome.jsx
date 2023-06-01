@@ -3,13 +3,15 @@ import '../styles/index.css';
 import axios from "axios"
 import Swal from "sweetalert2"
 import { useAuthContext } from '../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 const Welcome = () => {
- 
-  const {loginAuth,numeroEmpleado,setNumeroEmpleado}=useAuthContext()
   const [num,setNum]=useState("2")
-  const [codigoAcceso,setCodigoAcceso]=useState("05430197")
-  const [notificacion,setNotificacion]=useState("")
+  // const [codigoAcceso,setCodigoAcceso]=useState("05430197")
+  const {numeroEmpleado,setNumeroEmpleado}=useAuthContext()
+  const [notificacion,setNotificacion]=useState("1")
+  const navigate=useNavigate()
+  
   // const codigoAccesoRecibido=loginAuth(numeroEmpleado,notificacion)
   return (
     <div>
@@ -25,17 +27,16 @@ const Welcome = () => {
             <label className='labelWelcome'>No. de Empleado</label>
             <input onChange={(e)=>{
               e.preventDefault()
-              setNum(e.target.value)
+              setNumeroEmpleado(e.target.value)
             }}  type="text" className='inputWelcome' placeholder='Escribe tu numero de empleado'/>
             <button onClick={(e)=>{
                 e.preventDefault()
-                setNumeroEmpleado(num)
                 isNaN(num)?
                   Swal.fire('Error!',
                   'Ingresa un numero de empleado valido',
                   'error'):
                   console.log("si es")
-                  loginAuth(numeroEmpleado,"1")
+                  navigate("/authMethod")
             }} className='btnWelcome '>Ingresar</button>
         </div>
       </div>

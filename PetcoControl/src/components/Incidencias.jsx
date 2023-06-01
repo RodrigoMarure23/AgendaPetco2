@@ -146,7 +146,7 @@ const Incidencias = () => {
             ))}
           </tr>
         </thead>
-        <tbody className="">
+        <tbody className="borderR">
           {/* validacion para empleados de la bd */}
           {
             empleados.map((empleado,empleadoIndex)=>(

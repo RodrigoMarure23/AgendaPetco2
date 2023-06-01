@@ -35,7 +35,8 @@ font-family: 'Noto Sans TC', sans-serif;
   justify-content: center;
   color:black;
   height: 100vh;
-  background-color: #03b7f5;
+  background: rgb(3,183,245);
+background: linear-gradient(184deg, rgba(3,183,245,1) 0%, rgba(15,139,182,1) 100%);;
 }
 .contenedorAuthMethod{
   display: grid;
@@ -115,13 +116,16 @@ ul.navbar-nav{
 }
 .NBorder{
   /* border: solid grey; */
-  height: 85%;
+  height: fit-content;
   width: 90%;
   position: absolute;
-  top: 50%;
-  left: 50%;
+  top: 50%; 
+   left: 50%;
   transform: translate(-50%, -50%);
   background-color: #f1eded9f;
+  border-radius: 15px; 
+}
+.borderR{
   border-radius: 15px;
 }
 div.NBorder{

@@ -5,8 +5,9 @@ const isValidToken=(token)=>{
         return false
     }
     const {exp} =jwtDecode(token)
-    const currentTime=Date.now()/1000
-    return exp>currentTime
+    console.log("exp ",exp)
+    // const currentTime=Date.now()/1000
+    // return exp>currentTime
 }
 
 const setSession=(token)=>{
@@ -25,3 +26,4 @@ const setUserDatatoLS=(data)=>{
     }
 }
 export {isValidToken,setSession,setUserDatatoLS}
+// 

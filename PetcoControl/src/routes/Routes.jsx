@@ -6,7 +6,6 @@ import Incidencias from '../components/Incidencias'
 import Fotografias from '../components/Fotografias'
 import Calendar from '../components/Calendario'
 import Calendario2 from "../components/Calendario2"
-import Login from '../components/Login'
 import Public from '../guards/Public'
 import Private from "../guards/Private"
 import Welcome from '../components/Welcome'
@@ -16,9 +15,8 @@ const Paths = () => {
     <Router>
         <Routes>
             {/* <Route path="/" element={<Login/>} replace/> */}
-            <Route path="/" element={<Welcome/>} replace/>
+            <Route path="/" element={<Public><Welcome/></Public>} index/>
             <Route path="/authMethod" element={<AuthMethod/>} replace/>
-            <Route path="/login" element={<Public><Login/></Public>}index/>
 
               <Route path='/home'  element={<Private><App/></Private>}>
               <Route path='agenda' element={<Calendar/>}/>

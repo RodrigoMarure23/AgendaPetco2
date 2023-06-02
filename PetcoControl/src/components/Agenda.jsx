@@ -9,11 +9,17 @@ const Agenda = () => {
   const {numeroEmpleado}=useShopContext()
   const navigate = useNavigate();
   const [componenteActivo,setComponenteActivo]=useState("A")
-  const [textoTienda,setTextoTienda] = useState(null)
+  const [textoTienda,setTextoTienda] = useState("")
+  const [aux,setAux]=useState("")
+  const [empleadosRecuperados,setEmpleadosRecuperados]=useState("")
+  const [empleadosFinales,setEmpleadosFinales]=useState("")
  
   useEffect(()=>{
   getInfoData()
-},[])
+  setAux(true)
+  getdata()
+  console.log("adde",empleadosRecuperados.data)
+},[numeroEmpleado,aux])
   const handleClick=(componente)=>{
     setComponenteActivo(componente)
   }
@@ -34,6 +40,32 @@ const Agenda = () => {
                   'error')
     }
   }
+  
+  
+    const getdata=async()=>{
+      try {
+        console.log("numeroENAGENDA: ", localStorage.getItem("numeroEmpleado"))
+        const respuesta=await axios.get(`https://petcomplete.petco.com.mx/vacaciones/${localStorage.getItem("numeroEmpleado")}/getsubordinados`)
+        
+        const data2=respuesta.data.data
+        console.log("respuestaPetcoAgendaSubordinados: ", data2)
+        setEmpleadosRecuperados(data2)
+        validarEmpledadosPorTiendaGerente()
+
+      } catch (error) {
+        console.log("errorenAGENDASubordinados: ", error)
+      }
+      
+    }
+  const validarEmpledadosPorTiendaGerente=()=>{
+    empleadosRecuperados.map((empleado,empleadoIndex)=>{
+      console.log("empleado: ",empleado)
+      if(empleado.njefe==localStorage.getItem("numeroEmpleado")){
+         console.log("Pertenece",empleado)
+      }
+    })
+  }
+  
 
   return (
     <div className="Border" 

@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 const Calendar = () => {
   const [startDay, setStartDay] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(null);
@@ -23,6 +23,7 @@ const Calendar = () => {
   const handleClickDay = (date) => {
     console.log("date: ",date)
     setSelectedDate(date);
+    
   };
 
   const handleSaveEvent = () => {
@@ -77,7 +78,21 @@ const Calendar = () => {
 
     return calendar;
   };
-
+  const getSubordinadosporGerente=()=>{
+    fetch('http://sapdehbw.grupogigante.com.mx:8000/sap/bc/rest/rha_ag/${numeroEmpleado}/getsubordinados')
+  .then(response => response.json())
+  .then(data => {
+    // Manejar los datos de respuesta
+    console.log(data);
+  })
+  .catch(error => {
+    // Manejar el error
+    console.error('Error:', error);
+  });
+  }
+  useEffect(()=>{
+    getSubordinadosporGerente()
+  },[])
   return (
     <div style={{border:"solid", width:"auto", display:"inline-flex"}} className="calendar">
       <div className="calendar-header">

@@ -6,7 +6,7 @@ import { useAuthContext } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
 const Welcome = () => {
-  const [num,setNum]=useState("2")
+  const [num,setNum]=useState("")
   // const [codigoAcceso,setCodigoAcceso]=useState("05430197")
   const {numeroEmpleado,setNumeroEmpleado}=useAuthContext()
   const [notificacion,setNotificacion]=useState("1")
@@ -31,10 +31,15 @@ const Welcome = () => {
             }}  type="text" className='inputWelcome' placeholder='Escribe tu numero de empleado'/>
             <button onClick={(e)=>{
                 e.preventDefault()
-                isNaN(num)?
+                isNaN(numeroEmpleado)?
                   Swal.fire('Error!',
                   'Ingresa un numero de empleado valido',
-                  'error'):
+                  'error').then((result)=>{
+                    if(result.isConfirmed){
+                      navigate("/")
+                    }
+                  })
+                  :
                   console.log("si es")
                   navigate("/authMethod")
             }} className='btnWelcome '>Ingresar</button>

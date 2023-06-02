@@ -24,6 +24,8 @@ const AuthProvider = ({ children }) => { // todo lo que se exporta como funcione
     setAuthed(false)
     setInit(false)
     setNumeroEmpleado(null)
+    localStorage.setItem("numeroTienda",null)
+    localStorage.setItem("numeroEmpleado",null)
   }
   // cuando se actualize el navegador va a setear el login
   useEffect(() => {

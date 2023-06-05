@@ -6,6 +6,7 @@ import axios from "axios";
 import Swal from "sweetalert2"
 const Agenda = () => {
   const {setTextoRuta}=useShopContext()
+  const {empleados,setEmpleados}=useShopContext()
   const {numeroEmpleado}=useShopContext()
   const navigate = useNavigate();
   const [componenteActivo,setComponenteActivo]=useState("A")
@@ -13,12 +14,10 @@ const Agenda = () => {
   const [aux,setAux]=useState("")
   const [empleadosRecuperados,setEmpleadosRecuperados]=useState("")
   const [empleadosFinales,setEmpleadosFinales]=useState("")
- 
   useEffect(()=>{
   getInfoData()
   setAux(true)
   getdata()
-  console.log("adde",empleadosRecuperados.data)
 },[numeroEmpleado,aux])
   const handleClick=(componente)=>{
     setComponenteActivo(componente)
@@ -47,26 +46,34 @@ const Agenda = () => {
         console.log("numeroENAGENDA: ", localStorage.getItem("numeroEmpleado"))
         const respuesta=await axios.get(`https://petcomplete.petco.com.mx/vacaciones/${localStorage.getItem("numeroEmpleado")}/getsubordinados`)
         
-        const data2=respuesta.data.data
+        const data2=respuesta
         console.log("respuestaPetcoAgendaSubordinados: ", data2)
         setEmpleadosRecuperados(data2)
+        localStorage.setItem("empleadosRecuperadosAgenda",JSON.stringify(data2.data.data))
         validarEmpledadosPorTiendaGerente()
+        
+      
 
       } catch (error) {
         console.log("errorenAGENDASubordinados: ", error)
       }
-      
+ 
     }
+ 
   const validarEmpledadosPorTiendaGerente=()=>{
-    empleadosRecuperados.map((empleado,empleadoIndex)=>{
-      console.log("empleado: ",empleado)
-      if(empleado.njefe==localStorage.getItem("numeroEmpleado")){
-         console.log("Pertenece",empleado)
-      }
-    })
+    const empleados=JSON.parse(localStorage.getItem("empleadosRecuperadosAgenda"))
+   const resultadoEmpleados= empleados.empleados.filter(empleado=>empleado.njefe==localStorage.getItem("numeroEmpleado"))
+   console.log("resultadoEmpleados: ",resultadoEmpleados)
+   const nuevoArray= resultadoEmpleados.map(empleado=>({
+    ...empleado,
+    horarios:[],
+    imagen:"",
+    incidencias:[],
+    
+   }))
+   setEmpleados(nuevoArray)
+   return resultadoEmpleados
   }
-  
-
   return (
     <div className="Border" 
   >

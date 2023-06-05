@@ -16,7 +16,7 @@ const Fotografias = () => {
       </div>
       <div>
         <h5>Gerente</h5>
-        <img src="../src/assets/cara4.png" alt="Gerente"  height={"150px"} width={"150px"} style={{borderRadius:"50%"}}/>
+        <img src="../src/assets/usuario.png" alt="Gerente"  height={"150px"} width={"150px"} style={{borderRadius:"50%"}}/>
       </div>
       <div className='fotosContenedor'>
         {

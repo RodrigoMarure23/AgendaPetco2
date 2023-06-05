@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import "../styles/index.css"
 import Swal from "sweetalert2";
 import { useShopContext } from '../context/ShopContext'
+import axios from "axios";
+import {format} from "date-fns"
 const daysOfWeek = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"];
 
 const Calendar = () => {
@@ -100,10 +102,14 @@ const Calendar = () => {
 
   
   const formatDate = (date) => {
-    const options = {  month: "short", day: "numeric" , year:"numeric"};
+    const options = {day: "numeric" , month: "short",  year:"numeric" };
     return new Intl.DateTimeFormat("es-MX", options).format(date);
   };
-
+  const formatearFecha = (fecha) => {
+    const formato = 'yyyyMMdd';
+    const fechaFormateada = format(fecha, formato);
+    return fechaFormateada;
+  };
   const days = getDaysOfWeek();
   
   function validarMinutos(event) {
@@ -141,16 +147,27 @@ const Calendar = () => {
     setResultTime(horaFinalStr);
     console.log("horafinal:",horaFinalStr)
   };
+  const consultarHorarios=(date)=>{
+    const horariosdata=[]
+    console.log(formatearFecha(startDay2))
+    empleados.map(async(empleado,empleadoIndex)=>{
+
+    const  resultado=await axios.get(`https://petcomplete.petco.com.mx/asistencias/datosEmpleado/${empleado.noemp}/${formatearFecha(startDay2)}`)
+    horariosdata.push(resultado.data.data)
+  })
+  return console.log("horariosObtenidos: ",horariosdata) 
+  }
   useEffect(()=>{
     setDiaSeleccionado(true)
     // console.log("mostrarBoton: ",mostrarBotonEntrada);
     console.log("empleados: ",empleados);
-  
+    consultarHorarios(formatearFecha(startDay2))
     
    
-  },[diaSeleccionado,resultTime,descanso])
+  },[diaSeleccionado,resultTime,descanso,empleados])
+if(empleados) {
   return (
-    <div className="calendar">
+    <div className="calendar" style={{top:"-200px"}}>
       <div className="header">
         <img onClick={()=>{setPrevWeek()
         setMenos(menos-1)
@@ -160,6 +177,7 @@ const Calendar = () => {
         setMenos(menos+1)
         setMas(mas+1)}} style={{display:mas==1?"none":""}} className="imgflecha der" src="../src/assets/proximo.png" alt="mas" />
       </div>
+      
       <table className="tabla">
         <thead>
           <tr>
@@ -173,9 +191,9 @@ const Calendar = () => {
         </thead>
         <tbody className="">
         {/* validacion para empleados de la bd */}
-        {empleados.map((empleado,empleadoIndex)=>(
+        { empleados.map((empleado,empleadoIndex)=>(
           <tr key={empleadoIndex} className="borderTable2">
-            <td > <p>{empleado.nombre}</p></td> 
+            <td > <p>{empleado.nombr+" "+empleado.apepa}</p></td> 
             {days.map((day, i) => (
               <td  onClick={(e)=>{
                 setEmpleadoIndex(empleadoIndex)
@@ -184,7 +202,7 @@ const Calendar = () => {
                 mostrarFormularioHandler(e,day)
               console.log("dia:",day);}} id="celdaInfo" className={empleado.horarios[i]?"boderTable sinfondo":"borderTable fondomas"} key={i}>
                <div id="divCelda"  >   {/* <img id="botonMas" src="../src/assets/mas.png" height={"15px"} alt="" /> */}
-                { diaSeleccionado &&  <span  style={{height:"100px"}} >{empleado.horarios[i].split("//")[1]}</span>}
+                { diaSeleccionado &&  <span  style={{height:"100px"}} >{}</span>}
                 </div>
               </td>
             ))}
@@ -193,13 +211,13 @@ const Calendar = () => {
           
           
         </tbody>
-      </table>
+      </table>  <div>
+      
+        </div>
       {/* validacion para mostrar formulario */}
        {
-                
-
           mostrarFormulario&&(
-            <div className="formularioHorario">
+            <div className="b formularioHorario">
             <div>
               <form className="Formulario">
                 <div className="centrar">
@@ -279,10 +297,32 @@ const Calendar = () => {
         </div>
           )
         }
+
+        
+      
     
         <button id="botonGuardar" className="btn btn-primary botonGuardar" >Guardar</button>
     </div>
   );
+} 
+if(!empleados) {
+  return (
+    <div className="calendar">
+      <div className="header">
+        <img onClick={()=>{setPrevWeek()
+        setMenos(menos-1)
+        setMas(mas-1)}} style={{display:menos==-1?"none":""}} className="imgflecha izq" src="../src/assets/anterior.png" alt="menos" />
+        <p className="semText">{`Semana del ${formatDate(days[0])} al ${formatDate(days[6])}`}</p>
+        <img onClick={()=>{setNextWeek()
+        setMenos(menos+1)
+        setMas(mas+1)}} style={{display:mas==1?"none":""}} className="imgflecha der" src="../src/assets/proximo.png" alt="mas" />
+      </div>
+      <h1>No Hay Empleados Disponibles</h1>
+    </div>
+  );
+} 
+
+  
 };
 
 export default Calendar;

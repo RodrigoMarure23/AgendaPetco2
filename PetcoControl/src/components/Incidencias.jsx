@@ -152,7 +152,7 @@ const Incidencias = () => {
             empleados.map((empleado,empleadoIndex)=>(
               <tr key={empleadoIndex} className="borderTable2">
                 <td>
-                  <p>{empleado.nombre}</p>
+                  <p>{empleado.nombr}</p>
                 </td>
                 {
                   days.map((day,i)=>(
@@ -162,10 +162,10 @@ const Incidencias = () => {
                       mostrarFormularioHandler(e,day)
                       console.log("diapicado: ",day);
                       }}
-                      className={empleado.incidencia[i]?"boderTable sinfondo":"borderTable fondomas"} key={i}>
+                      className={empleado.incidencias[i]?"boderTable sinfondo":"borderTable fondomas"} key={i}>
                         <div>
                           {
-                            diaSeleccionado && <span>{empleado.incidencia[i].split("--")[0]}</span>
+                            diaSeleccionado && <span>{}</span>
                           }
                         </div>
                       </td>
@@ -178,7 +178,7 @@ const Incidencias = () => {
       </table>
       {/* validacion para mostrar formulario */}
       {mostrarFormulario && (
-        <div className="formularioHorario">
+        <div className="formularioHorario ">
           <div>
             <form className="Formulario">
               <div className="centrar">

@@ -19,6 +19,7 @@ const Calendar = () => {
   const [empleadoIndex,setEmpleadoIndex]=useState()
   const [i,setI] = useState()
   const [resultTime, setResultTime] = useState();
+  const [day,setDay]=useState(null)
   const handleChange = (empleadoIndex, diaIndex, value,hora) => {
     // 
     if(!hora && valor==false){
@@ -47,7 +48,7 @@ const Calendar = () => {
       return
     }
     const updatedEmpleados = [...empleados];
-    updatedEmpleados[empleadoIndex].horarios[diaIndex] = value + "//"+ hora ;
+    updatedEmpleados[empleadoIndex].horarios[diaIndex] = "000000" + "//"+ hora ;
     updatedEmpleados[empleadoIndex].descanso=true;
     
     setEmpleados(updatedEmpleados);
@@ -64,9 +65,10 @@ const Calendar = () => {
   const [inputTime,setInputTime]=useState(false)
   const mostrarFormularioHandler=(e,day)=>{
     e.preventDefault()
+    setDay(day)
     setDiaSeleccionado(day.getDate())
     console.log("diaenform: ",day);
-    setDia(formatDate(day))
+    setDia(formatearFecha(day))
     // console.log("mostrar Formulario"); day es el dia de hoy, hora  ala que se realiza la consulta
     setMostrarFormulario(true)
     document.getElementById("botonGuardar").style.display="none"
@@ -138,9 +140,13 @@ const Calendar = () => {
 
     console.log("hora:", horas)
     console.log("minutos:", minutos)
-    if (horaSumada >= 24) {
-      horaSumada -= 24;
+    if (horaSumada>= 24) {
+      horaSumada = horaSumada- 24;
     }
+    if(minSumados==0 || minSumados==30){
+
+    }
+    
    
 
     const horaFinalStr = `${horaSumada.toString().padStart(2, "0")}:${minSumados.toString().padStart(2, "0")}`;
@@ -165,9 +171,10 @@ const Calendar = () => {
     
    
   },[diaSeleccionado,resultTime,descanso,empleados])
-if(empleados) {
+if(empleados.length>0) {
   return (
     <div className="calendar" style={{top:"-200px"}}>
+      
       <div className="header">
         <img onClick={()=>{setPrevWeek()
         setMenos(menos-1)
@@ -177,7 +184,6 @@ if(empleados) {
         setMenos(menos+1)
         setMas(mas+1)}} style={{display:mas==1?"none":""}} className="imgflecha der" src="../src/assets/proximo.png" alt="mas" />
       </div>
-      
       <table className="tabla">
         <thead>
           <tr>
@@ -202,7 +208,7 @@ if(empleados) {
                 mostrarFormularioHandler(e,day)
               console.log("dia:",day);}} id="celdaInfo" className={empleado.horarios[i]?"boderTable sinfondo":"borderTable fondomas"} key={i}>
                <div id="divCelda"  >   {/* <img id="botonMas" src="../src/assets/mas.png" height={"15px"} alt="" /> */}
-                { diaSeleccionado &&  <span  style={{height:"100px"}} >{}</span>}
+                { diaSeleccionado &&  <span  style={{height:"100px"}} >{empleado.horarios[i].split("//")[1]}</span>}
                 </div>
               </td>
             ))}
@@ -228,7 +234,7 @@ if(empleados) {
                   </div>
                  
                  <div className="inLine">
-                  <label>Fecha</label><label>{dia}</label>
+                  <label>Fecha</label><label>{formatDate(day)}</label>
                  </div>
                   
                   <div className="inLine">
@@ -245,9 +251,14 @@ if(empleados) {
                   </div>
                 
                   <div style={{display:mostrarBotonEntrada?"block":"none"}} className="inLine">
-                    <label>Hora Entrada</label><input  id="horarioInput"  type="time" onChange={(e)=>{setHora(e.target.value)
-                                                                                                      sumarHoras()
-                                                                                                validarMinutos(e)}} step="1800" />
+                    <label>Hora Entrada</label><input  id="horarioInput"  type="time" onChange={(e)=>{
+                      e.preventDefault()
+                      setHora(e.target.value)
+                      validarMinutos(e)
+                      sumarHoras()
+                       step="1800"
+                      }} />
+                                                                                                      
                   </div>
                   
                 </div>
@@ -277,7 +288,7 @@ if(empleados) {
                   }
                   if(valor==false){
                     
-                    handleChange(empleadoIndex,i,dia,hora);
+                    handleChange(empleadoIndex,i,dia ,hora);
                     sumarHoras()
                   }
                   if(valor==true){
@@ -305,7 +316,7 @@ if(empleados) {
     </div>
   );
 } 
-if(!empleados) {
+if(empleados.length==0) {
   return (
     <div className="calendar">
       <div className="header">

@@ -66,9 +66,9 @@ const Agenda = () => {
    console.log("resultadoEmpleados: ",resultadoEmpleados)
    const nuevoArray= resultadoEmpleados.map(empleado=>({
     ...empleado,
-    horarios:[],
+    horarios:["","","","","","",""],
     imagen:"",
-    incidencias:[],
+    incidencias:["","","","","","",""],
     
    }))
    setEmpleados(nuevoArray)

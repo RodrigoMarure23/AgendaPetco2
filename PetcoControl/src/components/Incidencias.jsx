@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import "../styles/index.css";
 import { useShopContext } from '../context/ShopContext'
 import Swal from "sweetalert2";
+import axios from "axios";
+import {format} from "date-fns"
 const daysOfWeek = [
   "Lunes",
   "Martes",
@@ -15,6 +17,8 @@ const daysOfWeek = [
 const Incidencias = () => {
   const [diaSeleccionado,setDiaSeleccionado]=useState(null)
   const startDay2=new Date()
+  const [diaIncio,setDiaIncio]=useState(null)
+  const [diaFin,setDiaFin]=useState(null)
   const [startDay, setStartDay] = useState(startDay2);
   const {empleados,setEmpleados}=useShopContext()
   const [mostrarFormulario, setMostrarFormulario] = useState(false);
@@ -22,23 +26,18 @@ const Incidencias = () => {
   const [incidencia,setIncidencia]=useState("")
   const [menos,setMenos]=useState(0)
   const [mas,setMas]=useState(0)
+  const [indexIncidencia,setIndexIncidencia]=useState("")
+  const [fecha,setFecha]=useState(null)
+  const indicesIncidencias=async()=>{
+     const incidenciasObtenidas = await axios.get("https://petcomplete.petco.com.mx/asistencias/catalogoIncidencias") 
+     setIndexIncidencia(incidenciasObtenidas.data.data)
+     console.log("incidenciasObtenidas: ",incidenciasObtenidas.data.data)
+
+  }
+  
   //funcion para obtener la semana completa con su dia 
   //   Date.prototype.getWeek = function() {
-    useEffect(()=>{
-      
-        setDiaSeleccionado(true)
-      console.log("incidencia: ",incidencia);
-      // (async () => { DETENER CAMARA WEB  
-      //       navigator.mediaDevices.getUserMedia({ video: false }).then((stream) => {
-      //             videoRef.current.srcObject = stream;
-      //             videoRef.current.stop();
-      //           });
-      //   })();
-      
   
-      
-      
-    },[incidencia,dia,diaSeleccionado])
 
     //   const onejan = new Date(this.getFullYear(), 0, 1);
     //   return Math.ceil(((this - onejan) / 86400000 + onejan.getDay() + 1) / 7);
@@ -49,29 +48,126 @@ const Incidencias = () => {
     const mostrarFormularioHandler = (e,day) => {
     e.preventDefault();
     setDiaSeleccionado(day.getDate())
-    setDia(formatDate(day))
+    setDia(formatearFecha(day))
     // console.log("mostrar Formulario"); day es el dia de hoy, hora  ala que se realiza la consulta
     setMostrarFormulario(true);
     document.getElementById("botonGuardar").style.display = "none";
   };
   const handleChange = (empleadoIndex,diaIndex, value,dia) => {
     const updatedEmpleados = [...empleados];
-    updatedEmpleados[empleadoIndex].incidencia[diaIndex] = value +"--"+ dia ;
+    updatedEmpleados[empleadoIndex].incidencias[diaIndex] = value +"--"+ dia ;
     setEmpleados(updatedEmpleados);
-    if(!value){
+    if(!value || value=="default"){
       Swal.fire(
         'Error!',
         'Ingresa una Incidencia!',
           'error'
     )
     const updatedEmpleados = [...empleados];
-    updatedEmpleados[empleadoIndex].incidencia[diaIndex] = value + "";
+    updatedEmpleados[empleadoIndex].incidencias[diaIndex] = "" ;
     setEmpleados(updatedEmpleados)
+    return
     }
+    switch (value) {
+      case "103":
+        const updatedEmpleados3 = [...empleados];
+        updatedEmpleados[empleadoIndex].incidencias[diaIndex] = value + "--" +"EMPLEADO DEL MES"+ "--" + dia;
+        setEmpleados(updatedEmpleados3 )
+        
+        break;
+        
+      case "112":
+        const updatedEmpleados4 = [...empleados];
+        updatedEmpleados[empleadoIndex].incidencias[diaIndex] = value + "--" +"PRIMA DOMINICAL"+ "--" + dia;
+        setEmpleados(updatedEmpleados4)
+          
+          break;
+
+      case "120":
+        const updatedEmpleados5 = [...empleados];
+        updatedEmpleados[empleadoIndex].incidencias[diaIndex] = value + "--" +"AYUDA DE TRANSPORTE"+ "--" + dia;
+        setEmpleados(updatedEmpleados5)
+          
+          break;
+      
+      case "511":
+        const updatedEmpleados6 = [...empleados];
+        updatedEmpleados[empleadoIndex].incidencias[diaIndex] = value + "--" +"ACCIDENTE DE TRANSITO"+ "--" + dia;
+        setEmpleados(updatedEmpleados6)
+              
+          break;
+
+        case "512":
+          const updatedEmpleados7 = [...empleados];
+         updatedEmpleados[empleadoIndex].incidencias[diaIndex] = value + "--" +"ACCIDENTE DE TRABAJO"+ "--" + dia;
+         setEmpleados(updatedEmpleados7)
+                      
+         break;
+
+        case "513":
+          const updatedEmpleados8 = [...empleados];
+          updatedEmpleados[empleadoIndex].incidencias[diaIndex] = value + "--" +"INCAPACIDAD POR MATERNIDAD"+ "--" + dia;
+          setEmpleados(updatedEmpleados8)
+                              
+            break;
+
+        case "515":
+          const updatedEmpleados9 = [...empleados];
+          updatedEmpleados[empleadoIndex].incidencias[diaIndex] = value + "--" +"ENFERMEDAD GENERAL"+ "--" + dia;
+          setEmpleados(updatedEmpleados9)
+                    
+            break;
+          
+        case "525":
+          const updatedEmpleados10 = [...empleados];
+         updatedEmpleados[empleadoIndex].incidencias[diaIndex] = value + "--" +"FALTANTE DE CAJA"+ "--" + dia;
+         setEmpleados(updatedEmpleados10)
+                            
+          break
+
+        case "601":
+          const updatedEmpleados11 = [...empleados];
+          updatedEmpleados[empleadoIndex].incidencias[diaIndex] = value + "--" +"PERMISO SIN GOSE DE SUELDO"+ "--" + dia;
+          setEmpleados(updatedEmpleados11)
+                                  
+          break;
+
+
+        case "602":
+          const updatedEmpleados12 = [...empleados];
+         updatedEmpleados[empleadoIndex].incidencias[diaIndex] = value + "--" +"FALTA INJUSTIFICADA"+ "--" + dia;
+         setEmpleados(updatedEmpleados12)
+              
+          break;
+
+        case "603":
+          const updatedEmpleados13 = [...empleados];
+         updatedEmpleados[empleadoIndex].incidencias[diaIndex] = value + "--" +"SANCION ADMINISTRATIVA"+ "--" + dia;
+         setEmpleados(updatedEmpleados13)
+              
+          break;
+
+       case "FL":
+        const updatedEmpleados14 = [...empleados];
+        updatedEmpleados[empleadoIndex].incidencias[diaIndex] = value + "--" +"FESTIVO LABORADO"+ "--" + dia;
+        setEmpleados(updatedEmpleados14)
+              
+              break;
+
+        case "VA":
+          const updatedEmpleados15 = [...empleados];
+        updatedEmpleados[empleadoIndex].incidencias[diaIndex] = value + "--" +"VACACIONES"+ "--" + dia;
+        setEmpleados(pdatedEmpleados15)
+              
+              break;
+      default:
     
+        break;
+        
+    }
     if(!value & !dia){
       const updatedEmpleados = [...empleados];
-    updatedEmpleados[empleadoIndex].incidencia[diaIndex] = value + dia;
+    updatedEmpleados[empleadoIndex].incidencias[diaIndex] = value + dia;
     setEmpleados(updatedEmpleados);
     }
   };
@@ -105,12 +201,89 @@ const Incidencias = () => {
   };
 
   const days = getDaysOfWeek();
+  const formatearFecha = (fecha) => {
+    const formato = 'yyyyMMdd';
+    const fechaFormateada = format(fecha, formato);
+    return fechaFormateada;
+  };
 
-  return (
+  const consultarIncidencias=()=>{
+    // console.log("diainicio: ",diaIncio)
+    // console.log("diaFin: ",diaFin)
+
+    setDiaIncio(formatearFecha(days[0]))
+    setDiaFin(formatearFecha(days[6]))
+   const recuperadata=async()=>{
+    empleados.map(async(empleado,indexempleado)=>{
+      const incidenciasDelaSemana= await axios.get(`https://petcomplete.petco.com.mx/asistencias/consultaIncidencias/${empleado.noemp}/${diaIncio}/${diaFin}`)
+      console.log("incidenciasRecuperadas: ",incidenciasDelaSemana.data)
+      if(incidenciasDelaSemana.data.replyCode==200 ){
+        const newData=[...empleados]
+        newData[indexempleado].incidencias[i]=incidenciasDelaSemana.data.data.incidencias[i]?incidenciasDelaSemana.data.data.incidencias[i]:""
+        //validar indice de incidencia
+        // newData[indexempleado].incidencias[i]=incidenciasDelaSemana.data.data.incidencias[i]
+        setEmpleados(newData)
+      }
+
+    })
+      
+    }
+    recuperadata()
+  }
+
+  const enviarIncidencia=async(numeroempleado,njefe,sucur,fecha,indiceinc)=>{
+    if(!indiceinc){
+      return
+    }
+    const sendend= await axios.post("https://petcomplete.petco.com.mx/asistencias/actualizaInicidencias",{
+      "noemp":`${numeroempleado}`,
+      "njefe":`${njefe}`,
+      "sucur":`${sucur}`,
+      "detal":[{
+          "fecha":`${fecha}`,
+          "incid":`${indiceinc}`
+      }]
+  })
+  console.log("respuestaGuardarEnviarIncidencia: ",sendend.data)
+  // console.log("numeroEmpleadoo :",numeroempleado)
+  // console.log("njefeee :",njefe)
+  // console.log("sucurrrr :",sucur)
+  // console.log("fechaaaa :",fecha)
+  // console.log("indiceincidencia:",indiceinc)
+
+  }
+  useEffect(()=>{
+    
+  console.log("daaays: ",days)
+  setDiaIncio(days[0])
+  setDiaFin(days[6])
+  setDiaSeleccionado(true)
+  consultarIncidencias()
+  setDiaSeleccionado(dia)
+  
+  indicesIncidencias()
+  console.log("diainicio: ",diaIncio)
+  console.log("diafin: ",diaFin)
+
+
+  // (async () => { DETENER CAMARA WEB  
+  //       navigator.mediaDevices.getUserMedia({ video: false }).then((stream) => {
+  //             videoRef.current.srcObject = stream;
+  //             videoRef.current.stop();
+  //           });
+  //   })();
+  
+  
+  
+},[fecha,dia,diaIncio,diaFin,diaSeleccionado,incidencia])
+
+  if(empleados.length>0){
+    return (
     <div className="calendar">
       <div className="header">
         <img
           onClick={()=>{setPrevWeek()
+            consultarIncidencias()
         
             setMenos(menos-1)
             setMas(mas-1)
@@ -126,6 +299,7 @@ const Incidencias = () => {
         )} al ${formatDate(days[6])}`}</p>
         <img
           onClick={()=>{setNextWeek()
+            consultarIncidencias()
             setMenos(menos+1)
             setMas(mas+1)
             }} style={{display:mas==0?"none":""}}
@@ -152,7 +326,7 @@ const Incidencias = () => {
             empleados.map((empleado,empleadoIndex)=>(
               <tr key={empleadoIndex} className="borderTable2">
                 <td>
-                  <p>{empleado.nombr}</p>
+                  <p>{empleado.nombr+" "+empleado.apepa}</p>
                 </td>
                 {
                   days.map((day,i)=>(
@@ -160,12 +334,13 @@ const Incidencias = () => {
                       setEmpleadoIndex(empleadoIndex)
                       setI(i)
                       mostrarFormularioHandler(e,day)
-                      console.log("diapicado: ",day);
+                      setFecha(formatDate(day))
+                      console.log("diapicado: ",formatearFecha(day) );
                       }}
                       className={empleado.incidencias[i]?"boderTable sinfondo":"borderTable fondomas"} key={i}>
                         <div>
                           {
-                            diaSeleccionado && <span>{}</span>
+                         empleado.incidencias[i] && empleado.incidencias[i] ?  <span>{empleado.incidencias[i].incid}</span> : <span> </span> 
                           }
                         </div>
                       </td>
@@ -185,27 +360,29 @@ const Incidencias = () => {
                 <div>
                   <h1 style={{ color: "#0304f5" }}>Incidencia</h1>
                   <div className="inLine">
-                    <label>Nombre: </label> <p>{empleados[empleadoIndex].nombre}</p>
+                    <label>Nombre: </label> <p>{empleados[empleadoIndex].nombr}</p>
                   </div>
                   <div className="inLine">
-                  <label>Fecha</label><label>{dia}</label>
+                  <label>Fecha</label><label>{fecha}</label>
                  </div>
                   <div className="inLine">
                     <label>Incidencia: </label>
                       <select id="options" onChange={(e)=>{setIncidencia(e.target.value)
                       ;}}> 
-                        <option value="ninguno">ninguno</option>
-                        <option value="Empleado del Mes">Empleado del Mes</option>
-                        <option value="Prima Dominical">Prima Dominical</option>
-                        <option value="Ayuda de Transporte">Ayuda de Transporte</option>
-                        <option value="Accidente de Trayecto">Accidente de Trayecto</option>
-                        <option value="Accidente de Trabajo">Accidente de Trabajo</option>
-                        <option value="Incapacidad por Maternidad">Incapacidad por Maternidad</option>
-                        <option value="Incapacidad por Enfermedad Gral">Incapacidad por Enfermedad Gral</option>
-                        <option value="Faltante de Caja">Faltante de Caja</option>
-                        <option value="Permiso sin Gose de Sueldo">Permiso sin Gose de Sueldo</option>
-                        <option value="Falta Injustificada">Falta Injustificada</option>
-                        <option value="Sancion Administrativa">Sancion Administrativa</option>
+                        <option value="default">ninguno</option>
+                        <option value="103">Empleado del Mes</option>
+                        <option value="112">Prima Dominical</option>
+                        <option value="120">Ayuda de Transporte</option>
+                        <option value="511">Accidente de Trayecto</option>
+                        <option value="512">Accidente de Trabajo</option>
+                        <option value="513">Incapacidad por Maternidad</option>
+                        <option value="515">Incapacidad por Enfermedad Gral</option>
+                        <option value="525">Faltante de Caja</option>
+                        <option value="601">Permiso sin Gose de Sueldo</option>
+                        <option value="602">Falta Injustificada</option>
+                        <option value="603">Sancion Administrativa</option>
+                        <option value="FL">Festivo Laborado</option>
+                        <option value="VA">Vacaciones</option>
                       </select>
                     
                   </div>
@@ -217,12 +394,12 @@ const Incidencias = () => {
                     onClick={(e) => {
                       e.preventDefault();
                       setMostrarFormulario(false);
-                      setIncidencia("")
+                      // setIncidencia("")
                       // handleChange(empleadoIndex,i,"","")
                       document.getElementById("botonGuardar").style.display =
                         "block";
                       const copy2=[...empleados];
-                      copy2[empleadoIndex].incidencia[i]="";
+                      copy2[empleadoIndex].incidencias[i]="";
                       setEmpleados(copy2)
                     }}
                   >
@@ -238,6 +415,7 @@ const Incidencias = () => {
                       document.getElementById("botonGuardar").style.display =
                         "block";
                         setIncidencia("")
+                          enviarIncidencia(empleados[empleadoIndex].noemp,empleados[empleadoIndex].njefe,localStorage.getItem("numeroTienda"),dia,incidencia)
                     }}
                   >
                     Guardar
@@ -254,6 +432,24 @@ const Incidencias = () => {
       </button>
     </div>
   );
+  }
+  if(empleados.length==0) {
+    return (
+      <div className="calendar">
+        <div className="header">
+          <img onClick={()=>{setPrevWeek()
+          setMenos(menos-1)
+          setMas(mas-1)}} style={{display:menos==-1?"none":""}} className="imgflecha izq" src="../src/assets/anterior.png" alt="menos" />
+          <p className="semText">{`Semana del ${formatDate(days[0])} al ${formatDate(days[6])}`}</p>
+          <img onClick={()=>{setNextWeek()
+          setMenos(menos+1)
+          setMas(mas+1)}} style={{display:mas==1?"none":""}} className="imgflecha der" src="../src/assets/proximo.png" alt="mas" />
+        </div>
+        <h1>No Hay Empleados Disponibles</h1>
+      </div>
+    );
+  } 
+  
 };
 
 export default Incidencias;

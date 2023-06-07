@@ -9,7 +9,8 @@ const Fotografias = () => {
   const [i,setI]=useState(0)
   const [mostrarNewFoto,setMostrarNewFoto]=useState(false)
   // const imagenDefault="../src/assets/usuario.png"
-  return (
+  if(empleados.length>0){
+    return (
     <div>
       <div>
         <h3>Fotografias</h3>
@@ -42,6 +43,19 @@ const Fotografias = () => {
     </div>
 
 )
+  }
+  
+
+if(empleados.length==0) {
+  return (
+    <div className="calendar">
+      <div className="header">
+         
+      </div>
+      <h1>No Hay Empleados Disponibles</h1>
+    </div>
+  );
+} 
 }
 
 export default Fotografias 

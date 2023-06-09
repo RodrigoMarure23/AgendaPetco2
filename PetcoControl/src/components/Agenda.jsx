@@ -7,6 +7,7 @@ import Swal from "sweetalert2"
 const Agenda = () => {
   const {setTextoRuta}=useShopContext()
   const {empleados,setEmpleados}=useShopContext()
+  const {empleadosDefault,setEmpleadosDefault} = useShopContext()
   const {numeroEmpleado}=useShopContext()
   const navigate = useNavigate();
   const [componenteActivo,setComponenteActivo]=useState("A")
@@ -68,10 +69,11 @@ const Agenda = () => {
     ...empleado,
     horarios:["","","","","","",""],
     imagen:"",
-    incidencias:["","","","","","",""],
+    incidencias:[{},{},{},{},{},{},{}],
     
    }))
    setEmpleados(nuevoArray)
+   setEmpleadosDefault(nuevoArray)
    return resultadoEmpleados
   }
   return (

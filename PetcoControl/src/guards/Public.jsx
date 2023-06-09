@@ -5,7 +5,7 @@ const Public = ({ children }) => {
   // <Navigate> -> Componente
   const { authed } = useAuthContext()
   if (authed) {
-    return <Navigate to='/app/main' replace />
+    return <Navigate to='/home/agenda' replace />
   }
   return (
     <>

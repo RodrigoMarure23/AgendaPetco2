@@ -10,7 +10,7 @@ const NavBar = ()=> {
   const {textoRuta,setTextoRuta}=useShopContext()
  return(
  <div>
-  <nav className="navbar navbar-expand-lg bg-body-tertiary bg-light">
+  <nav style={{marginTop:"5px"}} className="navbar navbar-expand-lg bg-body-tertiary bg-light">
     
       <ul className="navbar-nav me-auto ">
         
@@ -29,7 +29,7 @@ const NavBar = ()=> {
         </li>
       </ul>
       <ul className="navbar-nav petco"> <li className="">
-          <img src="../src/assets/logoPetco1.png" alt="LogoDePetco" height={"35px"} />
+          <img src="../src/assets/logoPetco1.png" alt="LogoDePetco" height={"50px"} />
         </li></ul>
   </nav>
   

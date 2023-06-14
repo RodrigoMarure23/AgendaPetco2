@@ -18,7 +18,7 @@ const methods=()=>{
   //   {nombre:"anonima sanchez ", imagen:"",horarios:["","","","","","",""],descanso:"",incidencia:["","","","","","",""]},
   // ])
 const [empleados,setEmpleados]=useState([])
-
+const [total,setTotal]=useState(null)
 const [infoTiendaGlobal,setInfoTiendaGlobal]=useState("Tienda numero 9999 MIYANA");
   const [textoRuta,setTextoRuta]=useState("Agenda")
   const [data,setData]=useState(()=>{
@@ -52,7 +52,8 @@ const [infoTiendaGlobal,setInfoTiendaGlobal]=useState("Tienda numero 9999 MIYANA
     saveSchedule,
     sms,
     saveTextDash,
-    textoRuta
+    textoRuta,setTextoRuta,
+    total,setTotal
   }
 }
 

@@ -15,11 +15,15 @@ const Calendar = () => {
   const [hora,setHora]=useState(null)
   const [descanso,setDescanso]=useState(false)
   const [valor,setValor]=useState(false)
+  
   const {empleados,setEmpleados}=useShopContext()
   const [empleadoIndex,setEmpleadoIndex]=useState()
   const [i,setI] = useState()
   const [resultTime, setResultTime] = useState();
   const [day,setDay]=useState(null)
+  const {total,setTotal}=useShopContext()
+  const [x,setX]=useState(null)
+  const [empleadosCopia,setEmpleadosCopia]=useState(null)
   const handleChange = (empleadoIndex, diaIndex, value,hora) => {
     // 
     if(!hora && valor==false){
@@ -40,12 +44,12 @@ const Calendar = () => {
     if(hora=="Descanso" && value){
       
       if(empleados[empleadoIndex].descanso==true){
-        Swal.fire(
+       return Swal.fire(
           'Error!',
           'Ya se a registrado un dia de Descanso!',
           'error'
       )
-      return
+      
     }
     const updatedEmpleados = [...empleados];
     updatedEmpleados[empleadoIndex].horarios[diaIndex] = "000000" + "//"+ hora ;
@@ -60,6 +64,7 @@ const Calendar = () => {
     setEmpleados(updatedEmpleados);
     }
     
+    setTotal(total => total + x)
   };
   const [mostrarBotonEntrada,setMostrarBotonEntrada]=useState(true)
   const [inputTime,setInputTime]=useState(false)
@@ -154,23 +159,48 @@ const Calendar = () => {
     console.log("horafinal:",horaFinalStr)
   };
   const consultarHorarios=(date)=>{
+    obtenerPorcentajesBarra()
+   
     const horariosdata=[]
     console.log(formatearFecha(startDay2))
     empleados.map(async(empleado,empleadoIndex)=>{
-
     const  resultado=await axios.get(`https://petcomplete.petco.com.mx/asistencias/datosEmpleado/${empleado.noemp}/${formatearFecha(startDay2)}`)
     horariosdata.push(resultado.data.data)
   })
   return console.log("horariosObtenidos: ",horariosdata) 
   }
+  const obtenerPorcentajesBarra=()=>{
+   
+    console.log("empleadoslength",empleados.length)
+    var xs = 100/ (empleados.length*7)
+    setX(xs)
+    console.log("x",xs)
+
+  }
+  const copia3=[...empleados]
+ 
+  const addDayDate=()=>{
+    const nuevoArray2= copia3.map(empleado=>({
+      ...empleado,
+      fechas:[{fecha:formatearFecha(days[0])},{fecha:formatearFecha(days[1])},{fecha:formatearFecha(days[2])},{fecha:formatearFecha(days[3])},{fecha:formatearFecha(days[4])},{fecha:formatearFecha(days[5])},{fecha:formatearFecha(days[6])}]
+    }))
+    setEmpleados(nuevoArray2)
+    
+   return console.log("empleadosconfechaAgenda:",nuevoArray2)
+  }
+ 
   useEffect(()=>{
+    
     setDiaSeleccionado(true)
+    
     // console.log("mostrarBoton: ",mostrarBotonEntrada);
     console.log("empleados: ",empleados);
+     addDayDate()
+    console.log(days)
     consultarHorarios(formatearFecha(startDay2))
+    obtenerPorcentajesBarra()
     
-   
-  },[diaSeleccionado,resultTime,descanso,empleados])
+  },[diaSeleccionado,resultTime,menos,mas,empleados])
 if(empleados.length>0) {
   return (
     <div className="calendar" style={{top:"-200px"}}>
@@ -201,11 +231,15 @@ if(empleados.length>0) {
           <tr key={empleadoIndex} className="borderTable2">
             <td > <p>{empleado.nombr+" "+empleado.apepa}</p></td> 
             {days.map((day, i) => (
-              <td  onClick={(e)=>{
+              <td  onClick={(e)=>{ menos==
                 setEmpleadoIndex(empleadoIndex)
                 setHora(hora) 
                 setI(i)
+                if(menos=="-1"){
+                  setMostrarFormulario(!mostrarFormulario)
+                }
                 mostrarFormularioHandler(e,day)
+                
               console.log("dia:",day);}} id="celdaInfo" className={empleado.horarios[i]?"boderTable sinfondo":"borderTable fondomas"} key={i}>
                <div id="divCelda"  >   {/* <img id="botonMas" src="../src/assets/mas.png" height={"15px"} alt="" /> */}
                 { diaSeleccionado &&  <span  style={{height:"100px"}} >{empleado.horarios[i].split("//")[1]}</span>}
@@ -274,6 +308,8 @@ if(empleados.length>0) {
                   copy2[empleadoIndex].horarios[i]="";
                   setEmpleados(copy2)
                   setHora()
+                  setTotal(total => total - x)
+                  
                 }}>Cancelar</button>
                 <button className="btn" type="submit" onClick={(e)=>{
                   e.preventDefault()
@@ -295,7 +331,9 @@ if(empleados.length>0) {
                     
                     handleChange(empleadoIndex,i,dia,"Descanso");
                   }
+                  // setTotal(total => total + x)
                   }
+                  
                   // document.getElementById("botonMas").style.display="none"
                   
               }>Guardar</button>
@@ -312,7 +350,7 @@ if(empleados.length>0) {
         
       
     
-        <button id="botonGuardar" className="btn btn-primary botonGuardar" >Guardar</button>
+        <button id="botonGuardar" style={{display:menos=="-1"?"none":""}} className="btn  botonGuardar" >GuardarTODO</button>
     </div>
   );
 } 

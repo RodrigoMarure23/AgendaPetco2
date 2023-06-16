@@ -502,21 +502,19 @@ const Incidencias = () => {
                         }}
                       >
                         <option value="default">ninguno</option>
-                        <option value="103">Empleado del Mes</option>
-                        <option value="112">Prima Dominical</option>
-                        <option value="120">Ayuda de Transporte</option>
-                        <option value="511">Accidente de Trayecto</option>
-                        <option value="512">Accidente de Trabajo</option>
-                        <option value="513">Incapacidad por Maternidad</option>
-                        <option value="515">
-                          Incapacidad por Enfermedad Gral
-                        </option>
-                        <option value="525">Faltante de Caja</option>
-                        <option value="601">Permiso sin Gose de Sueldo</option>
-                        <option value="602">Falta Injustificada</option>
-                        <option value="603">Sancion Administrativa</option>
-                        <option value="FL">Festivo Laborado</option>
-                        <option value="VA">Vacaciones</option>
+                        <option value="103">EMPLEADO DEL MES</option>
+                        <option value="112">PRIMA DOMINICAL</option>
+                        <option value="120">AYUDA DE TRANSPORTE</option>
+                        <option value="511">ACCIDENTE DE TRAYECTO</option>
+                        <option value="512">ACCIDENTE DE TRABAJO</option>
+                        <option value="513">INCAPACIDAD POR MATERNIDAD</option>
+                        <option value="515">INCAPACIDAD POR ENFERMEDAD GNRAL</option>
+                        <option value="525">FALTANTE DE CAJA</option>
+                        <option value="601">PERMISO SIN GOSE DE SUELDO</option>
+                        <option value="602">FALTA INJUSTIFICADA</option>
+                        <option value="603">SANCION ADMINISTRATIVA</option>
+                        <option value="FL">FESTIVO LABORADO</option>
+                        <option value="VA">VACACIONES</option>
                       </select>
                     </div>
                   </div>

@@ -30,6 +30,7 @@ const Incidencias = () => {
   const [menos, setMenos] = useState(0);
   const [mas, setMas] = useState(0);
   const [fecha, setFecha] = useState(null);
+  const respuesta=[]
   // const [semana0,setSemana0]=useState(null)
   // const [semana1,setSemana1]=useState(null)
   // const [semana2,setSemana2]=useState(null)
@@ -55,28 +56,28 @@ const Incidencias = () => {
     document.getElementById("botonGuardar").style.display = "none";
   };
   const handleChange = (empleadoIndex, diaIndex, value, dia) => {
-    const updatedEmpleados = [...empleados];
-    updatedEmpleados[empleadoIndex].incidencias[diaIndex] = value + "--" + dia;
-    setEmpleados(updatedEmpleados);
-    if (!value || value == "default") {
+    // const updatedEmpleados = [...empleados];
+    // updatedEmpleados[empleadoIndex].incidencias[diaIndex] = value + "--" +dia;
+    // setEmpleados(updatedEmpleados);
+    if (!value || value === "default" ) {
       Swal.fire("Error!", "Ingresa una Incidencia!", "error");
       const updatedEmpleados = [...empleados];
-      updatedEmpleados[empleadoIndex].incidencias[diaIndex] = "";
+      updatedEmpleados[empleadoIndex].incidencias[diaIndex] ="" ;
       setEmpleados(updatedEmpleados);
       return;
     }
     switch (value) {
       case "103":
         const updatedEmpleados3 = [...empleados];
-        updatedEmpleados[empleadoIndex].incidencias[diaIndex] =
-          value + "--" + "EMPLEADO DEL MES" + "--" + dia;
+        updatedEmpleados3[empleadoIndex].incidencias[diaIndex] =
+        value + "--" + "EMPLEADO DEL MES" + "--" + dia ;
         setEmpleados(updatedEmpleados3);
 
         break;
 
       case "112":
         const updatedEmpleados4 = [...empleados];
-        updatedEmpleados[empleadoIndex].incidencias[diaIndex] =
+        updatedEmpleados4[empleadoIndex].incidencias[diaIndex] =
           value + "--" + "PRIMA DOMINICAL" + "--" + dia;
         setEmpleados(updatedEmpleados4);
 
@@ -84,7 +85,7 @@ const Incidencias = () => {
 
       case "120":
         const updatedEmpleados5 = [...empleados];
-        updatedEmpleados[empleadoIndex].incidencias[diaIndex] =
+        updatedEmpleados5[empleadoIndex].incidencias[diaIndex] =
           value + "--" + "AYUDA DE TRANSPORTE" + "--" + dia;
         setEmpleados(updatedEmpleados5);
 
@@ -92,7 +93,7 @@ const Incidencias = () => {
 
       case "511":
         const updatedEmpleados6 = [...empleados];
-        updatedEmpleados[empleadoIndex].incidencias[diaIndex] =
+        updatedEmpleados6[empleadoIndex].incidencias[diaIndex] =
           value + "--" + "ACCIDENTE DE TRANSITO" + "--" + dia;
         setEmpleados(updatedEmpleados6);
 
@@ -100,7 +101,7 @@ const Incidencias = () => {
 
       case "512":
         const updatedEmpleados7 = [...empleados];
-        updatedEmpleados[empleadoIndex].incidencias[diaIndex] =
+        updatedEmpleados7[empleadoIndex].incidencias[diaIndex] =
           value + "--" + "ACCIDENTE DE TRABAJO" + "--" + dia;
         setEmpleados(updatedEmpleados7);
 
@@ -108,7 +109,7 @@ const Incidencias = () => {
 
       case "513":
         const updatedEmpleados8 = [...empleados];
-        updatedEmpleados[empleadoIndex].incidencias[diaIndex] =
+        updatedEmpleados8[empleadoIndex].incidencias[diaIndex] =
           value + "--" + "INCAPACIDAD POR MATERNIDAD" + "--" + dia;
         setEmpleados(updatedEmpleados8);
 
@@ -116,7 +117,7 @@ const Incidencias = () => {
 
       case "515":
         const updatedEmpleados9 = [...empleados];
-        updatedEmpleados[empleadoIndex].incidencias[diaIndex] =
+        updatedEmpleados9[empleadoIndex].incidencias[diaIndex] =
           value + "--" + "ENFERMEDAD GENERAL" + "--" + dia;
         setEmpleados(updatedEmpleados9);
 
@@ -124,7 +125,7 @@ const Incidencias = () => {
 
       case "525":
         const updatedEmpleados10 = [...empleados];
-        updatedEmpleados[empleadoIndex].incidencias[diaIndex] =
+        updatedEmpleados10[empleadoIndex].incidencias[diaIndex] =
           value + "--" + "FALTANTE DE CAJA" + "--" + dia;
         setEmpleados(updatedEmpleados10);
 
@@ -132,7 +133,7 @@ const Incidencias = () => {
 
       case "601":
         const updatedEmpleados11 = [...empleados];
-        updatedEmpleados[empleadoIndex].incidencias[diaIndex] =
+        updatedEmpleados11[empleadoIndex].incidencias[diaIndex] =
           value + "--" + "PERMISO SIN GOSE DE SUELDO" + "--" + dia;
         setEmpleados(updatedEmpleados11);
 
@@ -140,7 +141,7 @@ const Incidencias = () => {
 
       case "602":
         const updatedEmpleados12 = [...empleados];
-        updatedEmpleados[empleadoIndex].incidencias[diaIndex] =
+        updatedEmpleados12[empleadoIndex].incidencias[diaIndex] =
           value + "--" + "FALTA INJUSTIFICADA" + "--" + dia;
         setEmpleados(updatedEmpleados12);
 
@@ -148,7 +149,7 @@ const Incidencias = () => {
 
       case "603":
         const updatedEmpleados13 = [...empleados];
-        updatedEmpleados[empleadoIndex].incidencias[diaIndex] =
+        updatedEmpleados13[empleadoIndex].incidencias[diaIndex] =
           value + "--" + "SANCION ADMINISTRATIVA" + "--" + dia;
         setEmpleados(updatedEmpleados13);
 
@@ -156,7 +157,7 @@ const Incidencias = () => {
 
       case "FL":
         const updatedEmpleados14 = [...empleados];
-        updatedEmpleados[empleadoIndex].incidencias[diaIndex] =
+        updatedEmpleados14[empleadoIndex].incidencias[diaIndex] =
           value + "--" + "FESTIVO LABORADO" + "--" + dia;
         setEmpleados(updatedEmpleados14);
 
@@ -164,7 +165,7 @@ const Incidencias = () => {
 
       case "VA":
         const updatedEmpleados15 = [...empleados];
-        updatedEmpleados[empleadoIndex].incidencias[diaIndex] =
+        updatedEmpleados15[empleadoIndex].incidencias[diaIndex] =
           value + "--" + "VACACIONES" + "--" + dia;
         setEmpleados(updatedEmpleados15);
 
@@ -172,7 +173,7 @@ const Incidencias = () => {
       default:
         break;
     }
-    if (!value & !dia) {
+    if (!value && !dia) {
       const updatedEmpleados = [...empleados];
       updatedEmpleados[empleadoIndex].incidencias[diaIndex] = value + dia;
       setEmpleados(updatedEmpleados);
@@ -215,7 +216,14 @@ const Incidencias = () => {
   const days = getDaysOfWeek();
 
  
-  
+  const resetearIncidencias=()=>{
+    const nuevoArray3=empleados.map(empleado=>({
+      ...empleado,
+      incidencias:["","","","","","",""]
+    }))
+    setEmpleados(nuevoArray3)
+
+  }
 
   const consultarIncidenciasDeLaSemana=()=>{
    
@@ -245,6 +253,7 @@ const Incidencias = () => {
  
     
     if(menos===-1 && mas===-1){
+      resetearIncidencias()
       console.log(startDay)
       let diainico=days[0]
       let diafin =days[6]
@@ -256,7 +265,7 @@ const Incidencias = () => {
 
     }
     if(menos===-2 && mas===-2){
-      
+      resetearIncidencias()
       console.log(startDay)
       let diainico=days[0]
       let diafin =days[6]
@@ -286,16 +295,23 @@ const Incidencias = () => {
           );
           console.log("incidenciasRecuperadas del empleado "+empleado.nombr, data.data);
           if (data.replyCode == 200) {
-            const newData = [...empleados];
+            const newData = [...empleados,
+              
+            ];
            console.log("data.data",data.data.incidencias[0].fecha)
-         empleado.fechas.map(fecha=>{
-         return fecha
-         })
-          
+           respuesta.push({
+            noemp:empleado.noemp,
+            incidencias:data.data.incidencias
+           })
+          //  data.data.incidencias.map((incidd,inciddIndex)=>{
+          //   if(incidd.fecha==empleado.fechas[])
+          //  })
+           newData[indexempleado].incidencias=data.data.incidencias
            return setEmpleados(newData); 
            
           }if(data.replyCode==404 || !data.data.incidencias){
-            return console.log("no se encontraron incidencias")
+            console.log("no se encontraron incidencias")
+            return
           }
           // else{
           //   return console.log('no')
@@ -360,11 +376,12 @@ const Incidencias = () => {
   // }
   useEffect(() => {
     console.log("---------------------------");
-    
+    setDiaSeleccionado(true)
     consultarIncidenciasDeLaSemana()
     addDayDate()
     console.log("days",days)
     console.log("fechasEmpleado",empleados)
+    console.log("Respuesta:",respuesta)
     // setDiaIncio(days[0])
     // setDiaFin(days[6])
     // console.log("dia",diaSeleccionado)
@@ -377,7 +394,7 @@ const Incidencias = () => {
   
     
     
-  }, [dia,menos,mas,diaSeleccionado,]);
+  }, [diaSeleccionado,dia,menos,mas,incidencia]);
 
   
   if (empleados.length > 0) {
@@ -389,15 +406,15 @@ const Incidencias = () => {
               setPrevWeek();
               setMenos(menos - 1);
               setMas(mas - 1);
-              
+              resetearIncidencias()
               
             }}
-            style={{ display: menos == -2 ? "none" : "" }}
-            className="imgflecha izq"
-            src="../src/assets/anterior.png"
+            
+            className={menos===-2?"imgflecha2 izq":"imgflecha izq"}
+            src="../src/assets/menorque.png"
             alt="menos"
           />
-          <p className="semText">{`Semana del ${formatDate(
+          <p className={menos==0?"semText2":"semText"}>{`Semana del ${formatDate(
             days[0]
           )} al ${formatDate(days[6])}`}</p>
           <img
@@ -405,11 +422,11 @@ const Incidencias = () => {
               setNextWeek();
               setMenos(menos + 1);
               setMas(mas + 1);
-             
+              
             }}
-            style={{ display: mas == 0 ? "none" : "" }}
-            className="imgflecha der"
-            src="../src/assets/proximo.png"
+            
+            className={mas===0?"imgflecha2 der":"imgflecha der"}
+            src="../src/assets/mayorque.png"
             alt="mas"
           />
         </div>
@@ -445,13 +462,15 @@ const Incidencias = () => {
                         empleado.incidencias[i]
                       );
                     }}
-                    className={
-                      
-                         "borderTable fondomas"
-                    }
-                    key={i}
-                  >
-                    {<span>{}</span>}
+                    className={empleado.incidencias[i]?"boderTable sinfondo":"borderTable fondomas"}
+                    key={i}>
+                    
+                     <div>
+                     { diaSeleccionado &&  <span >{empleado.incidencias[i]?empleado.incidencias[i].incid:""}</span>}
+                        </div>
+                    
+                     
+                     
                   </td>
                 ))}
               </tr>
@@ -513,7 +532,7 @@ const Incidencias = () => {
                         document.getElementById("botonGuardar").style.display =
                           "block";
                         const copy2 = [...empleados];
-                        copy2[empleadoIndex].incidencias[i] ={};
+                        copy2[empleadoIndex].incidencias[i] ="";
                         setEmpleados(copy2);
                       }}
                     >
@@ -528,7 +547,7 @@ const Incidencias = () => {
                         setMostrarFormulario(false);
                         document.getElementById("botonGuardar").style.display =
                           "block";
-                        setIncidencia({});
+                        setIncidencia("");
                         // enviarIncidencia(
                         //   empleadosCopia[empleadoIndex].noemp,
                         //   empleadosCopia[empleadoIndex].njefe,

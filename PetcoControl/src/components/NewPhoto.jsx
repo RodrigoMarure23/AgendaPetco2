@@ -45,7 +45,7 @@ const NewPhoto = ({nombre}) => {
     // document.getElementById("botones3").style.display="none"
     console.log("imgenuseE: ",img);
     console.log("bin: ", bin)
-  }, [img]);
+  }, [img,nombre]);
   // function startVideo(){
   //   navigator.mediaDevices.getUserMedia({ video: true }).then((stream) => {
   //     videoRef.current.srcObject = stream;
@@ -63,7 +63,7 @@ const NewPhoto = ({nombre}) => {
     canvas.height = videoRef.current.videoHeight;
 
     context.drawImage(videoRef.current, 0, 0, canvas.width, canvas.height);
-     setBin(canvas)
+     setBin(canvas.value)
      const img= (canvas.toDataURL("image/png"));
 
      console.log("imagenglobal: ",img);
@@ -115,12 +115,14 @@ const NewPhoto = ({nombre}) => {
           setUrlImagen(data.secure_url)
           console.log("urlImagenGuardada: ", data.secure_url)
           const copiaEmpleados=[...empleados]
-         const resultado= copiaEmpleados.find(empleado=>empleado.nombre===nombre)
+         const resultado= copiaEmpleados.find(empleado=>empleado.nombr===nombre2)
         //  console.log("resultado: ",resultado)
         if(resultado){
           resultado.imagen=data.secure_url
           // console.log("imagennuevaaaaaaaa")
           setEmpleados(copiaEmpleados)
+        }else{
+          console.log("no se encotro ningun resultado")
         }
           return data.secure_url;
 
@@ -147,7 +149,10 @@ const NewPhoto = ({nombre}) => {
           style={{
             width: "240",
             height: "320",
-            backgroundImage: `url(${img})`,
+            backgroundImage: `url(${
+              img
+
+            })`,
             backgroundSize: "cover",
             position:"fixed",
             left:"380px",

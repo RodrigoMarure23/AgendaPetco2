@@ -170,10 +170,20 @@ div.NBorder{
   height: 30px;
   margin-top: 10px;
 }
+.imgflecha2{
+  height: 30px;
+  margin-top: 10px;
+  opacity: 0;
+  pointer-events: none;
+}
+
 
 .imgflecha:hover{
   cursor: pointer;
 }
+/* .imgflecha2:hover{
+  pointer-events: none;
+} */
 .inputSize{
   width:85%;
 }
@@ -181,6 +191,12 @@ div.NBorder{
 .semText{
   font-size: large;
   font-weight: 500;
+}
+.semText2{
+  font-size: large;
+  font-weight: 500;
+  font-weight: bolder;
+  
 }
 
 .izq{
@@ -296,6 +312,9 @@ background: linear-gradient(90deg, rgba(245,245,245,1) 0%, rgba(241,241,241,1) 1
 .sep{
   margin-left: 15px;
 }
+.enlinea{
+  display: flex;
+}
 
 
 
@@ -308,7 +327,7 @@ border-width: .9px;
   cursor: pointer;
 }
 .fondomas{
-  background-image: url(/src/assets/mas.png);
+  background-image: url(/src/assets/mas2.png);
   background-size: 23%;
   background-repeat: no-repeat;
   justify-content: center;
@@ -494,6 +513,12 @@ border-width: .9px;
 }
 
 .CuentaAtras{
+  position: relative;
+  top: 50px;
+  text-align: end;
+  
+}
+.CuentaAtras2{
   position: relative;
   top: 50px;
   text-align: end;

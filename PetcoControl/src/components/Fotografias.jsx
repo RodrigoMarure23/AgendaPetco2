@@ -3,11 +3,14 @@ import NewPhoto from './NewPhoto'
 import "../styles/index.css"
 import { useShopContext } from '../context/ShopContext'
 const Fotografias = () => {
-  useEffect(()=>{},[])
+  
   const {empleados,setEmpleados}=useShopContext()
-  const [nombre2,setNombre2]=useState()
+  const [nombre2,setNombre2]=useState(null)
   const [i,setI]=useState(0)
   const [mostrarNewFoto,setMostrarNewFoto]=useState(false)
+  useEffect(()=>{
+    setNombre2(nombre2)
+  },[i])
   // const imagenDefault="../src/assets/usuario.png"
   if(empleados.length>0){
     return (
@@ -24,10 +27,11 @@ const Fotografias = () => {
           empleados.map((empleado,index)=>(
             <div key={index} >
               <img className={empleado.imagen?"newPhoto":"backGroundDefault"}  onClick={(e)=>{empleado.imagen?null:setMostrarNewFoto(!mostrarNewFoto)
-              setNombre2(empleado.nombre)
+              setNombre2(empleado.nombr)
               e.preventDefault()
-              console.log("NombreEmpleado: ",empleado.nombre)}}  src={empleado.nombre?empleado.imagen:""}  height={"100px"} width={"100px"} />
+              console.log("NombreEmpleado: ",empleado.nombr)}}  src={empleado.nombr?empleado.imagen:""}  height={"100px"} width={"100px"} />
                <div style={{display:mostrarNewFoto?"inline":"none"}} className='nuevaFoto' >
+                <span>{empleado.nombr}</span>
               <NewPhoto  nombre={nombre2}></NewPhoto>
         </div>
             </div>

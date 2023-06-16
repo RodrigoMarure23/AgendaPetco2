@@ -199,8 +199,10 @@ const Calendar = () => {
     console.log(days)
     consultarHorarios(formatearFecha(startDay2))
     obtenerPorcentajesBarra()
+    // console.log("menos",menos)
+    // console.log("mas",mas)
     
-  },[diaSeleccionado,resultTime,menos,mas,empleados])
+  },[diaSeleccionado,resultTime,menos,mas])
 if(empleados.length>0) {
   return (
     <div className="calendar" style={{top:"-200px"}}>
@@ -208,11 +210,14 @@ if(empleados.length>0) {
       <div className="header">
         <img onClick={()=>{setPrevWeek()
         setMenos(menos-1)
-        setMas(mas-1)}} style={{display:menos==-1?"none":""}} className="imgflecha izq" src="../src/assets/anterior.png" alt="menos" />
-        <p className="semText">{`Semana del ${formatDate(days[0])} al ${formatDate(days[6])}`}</p>
+        setMas(mas-1)}}  className={menos===-1?"imgflecha2 izq":"imgflecha izq"} src="../src/assets/menorque.png" alt="menos" />
+        <div>
+          <p className={menos===0?"semText2": "semText"}>{`Semana del ${formatDate(days[0])} al ${formatDate(days[6])}`}</p>
+                  
+        </div>
         <img onClick={()=>{setNextWeek()
         setMenos(menos+1)
-        setMas(mas+1)}} style={{display:mas==1?"none":""}} className="imgflecha der" src="../src/assets/proximo.png" alt="mas" />
+        setMas(mas+1)}}  className={mas===1?"imgflecha2 der":"imgflecha der"} src="../src/assets/mayorque.png" alt="mas" />
       </div>
       <table className="tabla">
         <thead>
@@ -290,8 +295,8 @@ if(empleados.length>0) {
                       setHora(e.target.value)
                       validarMinutos(e)
                       sumarHoras()
-                       step="1800"
-                      }} />
+                       
+                      }} step="1800"/>
                                                                                                       
                   </div>
                   

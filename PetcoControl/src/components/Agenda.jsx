@@ -69,7 +69,7 @@ const Agenda = () => {
     ...empleado,
     horarios:["","","","","","",""],
     imagen:"",
-    incidencias:[{},{},{},{},{},{},{}],
+    incidencias:["","","","","","",""],
     
    }))
    setEmpleados(nuevoArray)
@@ -90,12 +90,24 @@ const Agenda = () => {
         <div className="TextoDashboard">
           <p style={{ fontWeight: "bold", marginLeft: "5px" }}>
             Tienda Número: {localStorage.getItem("numeroTienda")}
-            <span style={{marginLeft:"10px"}}>-{textoTienda}</span>
+            <span style={{marginLeft:"10px"}}>-{textoTienda.split("-")[0]}</span>
             <div class="progress" role="progressbar" aria-label="Animated striped example" aria-valuenow={total} aria-valuemin="0" aria-valuemax="100">
              <div class="progress-bar progress-bar-striped custom-color progress-bar-animated" style={{width:`${total}%`}}></div>
           </div>  
           </p>
-         
+         {
+          textoRuta==="Agenda"?
+          <div>
+            <nav class="navbar navbar-light bg-light">
+              <form class=" enlinea" style={{gap:"5px"}} >
+                <input class="form-control mr-sm-2" type="search" placeholder="Ingresa fecha a buscar" aria-label="Search"/>
+                <button class="btn  my-2 my-sm-0" type="submit" onClick={(e)=>{
+                  e.preventDefault()
+                }}>Search</button>
+              </form>
+            </nav>
+          </div>:null
+         } 
           <div className="gap">
             <button id="boton1"
             className={componenteActivo==="A"?"btn":"btn gris"}
@@ -132,10 +144,17 @@ const Agenda = () => {
 
         <div >
           <Outlet /> 
-        
-        <div className="CuentaAtras">
+{
+  total<="99.8"?
+  <div className="CuentaAtras">
           <CountdownComponent ></CountdownComponent>
+        </div>:
+        <div className="CuentaAtras">
+          <p className="btn">Copiar Horario a siguiente semana</p>
         </div>
+      
+}       
+        
         </div>
       </div>
     </div>

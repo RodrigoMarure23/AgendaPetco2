@@ -17,19 +17,19 @@ const daysOfWeek = [
 
 const Incidencias = () => {
   const { empleados, setEmpleados } = useShopContext();
-  const [empleadosCopia, setEmpleadosCopia] = useState([...empleados]);
   const [diaSeleccionado, setDiaSeleccionado] = useState(null);
   const startDay2 = new Date();
   // const [diaIncio, setDiaIncio] = useState(startDay2);
   // const [diaFin, setDiaFin] = useState(startDay2);
   const [startDay, setStartDay] = useState(startDay2);
-  const copia2=[...empleados]
+  
   const [mostrarFormulario, setMostrarFormulario] = useState(false);
   const [dia, setDia] = useState();
   const [incidencia, setIncidencia] = useState("");
   const [menos, setMenos] = useState(0);
   const [mas, setMas] = useState(0);
   const [fecha, setFecha] = useState(null);
+  const [diaincio,setDiaIncio]=useState()
   const respuesta=[]
   // const [semana0,setSemana0]=useState(null)
   // const [semana1,setSemana1]=useState(null)
@@ -183,12 +183,15 @@ const Incidencias = () => {
     const newDate = new Date(startDay);
     newDate.setDate(startDay.getDate() - 7);
     setStartDay(newDate);
+    
+  
   };
 
   const setNextWeek = () => {
     const newDate = new Date(startDay);
     newDate.setDate(startDay.getDate() + 7);
     setStartDay(newDate);
+    
 
   };
   const formatearFecha = (fecha) => {
@@ -203,10 +206,17 @@ const Incidencias = () => {
     for (let i = 0; i < 7; i++) {
       const date = new Date(startDate);
       date.setDate(startDate.getDate() + i);
-      days.push(date);
+      console.log(formatearFecha(date) )
+      days.push(formatearFecha(date));
     }
     return days;
   };
+  const formatearsemana=()=>{
+    days.map((dia,i)=>{
+      console.log("dats",days[i])
+
+    })
+  }
 
   const formatDate = (date) => {
     const options = { month: "short", day: "numeric", year: "numeric" };
@@ -238,9 +248,11 @@ const Incidencias = () => {
     // }
    
     if(menos===0  && mas===0){
+      addDayDate()
+      formatearsemana()
       console.log(startDay)
-      let diainico=days[0]
-      let diafin =days[6]
+      const diainico=days[0]
+      const diafin =days[6]
       console.log("diainicio",formatearFecha(diainico))
       console.log("diaFin: ",formatearFecha(diafin))
       console.log("semana a consultar pasada")
@@ -255,8 +267,9 @@ const Incidencias = () => {
     if(menos===-1 && mas===-1){
       resetearIncidencias()
       console.log(startDay)
-      let diainico=days[0]
-      let diafin =days[6]
+      addDayDate()
+      const diainico=days[0]
+      const diafin =days[6]
       console.log("diainicio",formatearFecha(diainico))
       console.log("diaFin: ",formatearFecha(diafin))
       console.log("semana a consultar pasada")
@@ -265,10 +278,11 @@ const Incidencias = () => {
 
     }
     if(menos===-2 && mas===-2){
+      addDayDate()
       resetearIncidencias()
       console.log(startDay)
-      let diainico=days[0]
-      let diafin =days[6]
+      const diainico=days[0]
+      const diafin =days[6]
       console.log("diainicio",formatearFecha(diainico))
       console.log("diaFin: ",formatearFecha(diafin))
       console.log("semana a consultar pasada")
@@ -307,6 +321,19 @@ const Incidencias = () => {
           //   if(incidd.fecha==empleado.fechas[])
           //  })
            newData[indexempleado].incidencias=data.data.incidencias
+           const acomodarFechasdeIncidencias=()=>{
+            empleado.fechas.map((fechax,indifechax)=>{
+            // if(data.data.incidencias[i].fecha===fechax.fecha){
+            //               newData[indexempleado].incidencias[indifechax]=data.data.incidencias[i]
+            //              return console.log("incidenciaDesdeAcomodarFechas:",empleado.incidencias[i].fecha)
+            //             }else{
+            //             return  console.log("no ay")
+            //             }
+            return console.log("fechasrecibidas:",fechax)
+            })
+            
+           }
+           acomodarFechasdeIncidencias()
            return setEmpleados(newData); 
            
           }if(data.replyCode==404 || !data.data.incidencias){
@@ -358,16 +385,14 @@ const Incidencias = () => {
   };
   const copia3=[...empleados]
   const addDayDate=()=>{
-    console.log("daysenADD",days)
-    console.log("COPIAEMPLEADOS: ",copia3
-    )
+    
     const nuevoArray2= copia3.map(empleado=>({
       ...empleado,
       fechas:[{fecha:formatearFecha(days[0])},{fecha:formatearFecha(days[1])},{fecha:formatearFecha(days[2])},{fecha:formatearFecha(days[3])},{fecha:formatearFecha(days[4])},{fecha:formatearFecha(days[5])},{fecha:formatearFecha(days[6])}]
     }))
-   
-    console.log("nuevoArray",nuevoArray2)
-     return setEmpleados(nuevoArray2)
+   setEmpleados(nuevoArray2)
+    
+     return console.log("nuevoArray",nuevoArray2)
   }
   
 
@@ -378,12 +403,12 @@ const Incidencias = () => {
     console.log("---------------------------");
     setDiaSeleccionado(true)
     consultarIncidenciasDeLaSemana()
+    console.log("empleados: ",empleados)
     addDayDate()
-    console.log("days",days)
+
     console.log("fechasEmpleado",empleados)
     console.log("Respuesta:",respuesta)
-    // setDiaIncio(days[0])
-    // setDiaFin(days[6])
+    console.log("days",days)
     // console.log("dia",diaSeleccionado)
     
     // console.log("menos",menos)
@@ -422,7 +447,7 @@ const Incidencias = () => {
               setNextWeek();
               setMenos(menos + 1);
               setMas(mas + 1);
-              
+              resetearIncidencias()
             }}
             
             className={mas===0?"imgflecha2 der":"imgflecha der"}
@@ -546,13 +571,13 @@ const Incidencias = () => {
                         document.getElementById("botonGuardar").style.display =
                           "block";
                         setIncidencia("");
-                        // enviarIncidencia(
-                        //   empleadosCopia[empleadoIndex].noemp,
-                        //   empleadosCopia[empleadoIndex].njefe,
-                        //   localStorage.getItem("numeroTienda"),
-                        //   dia,
-                        //   incidencia
-                        // );
+                        enviarIncidencia(
+                          empleados[empleadoIndex].noemp,
+                          empleados[empleadoIndex].njefe,
+                          localStorage.getItem("numeroTienda"),
+                          dia,
+                          incidencia
+                        );
                       }}
                     >
                       Guardar

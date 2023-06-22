@@ -103,7 +103,7 @@ const Agenda = () => {
                 <input class="form-control mr-sm-2" type="search" placeholder="Ingresa fecha a buscar" aria-label="Search"/>
                 <button class="btn  my-2 my-sm-0" type="submit" onClick={(e)=>{
                   e.preventDefault()
-                }}>Search</button>
+                }}>Buscar</button>
               </form>
             </nav>
           </div>:null

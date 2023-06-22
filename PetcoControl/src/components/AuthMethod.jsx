@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom'
 const AuthMethod = () => {
     const navigate = useNavigate()
     const [mostrarForm,setMostrarForm]=useState(false)
+    const {logOut}=useAuthContext()
     const {authed,setAuthed,setInit}=useAuthContext()
     const texto1="Codigo enviado a tu aplicacion Club Petco"
     const texto2="Codigo enviado a tu correo"
@@ -18,6 +19,7 @@ const AuthMethod = () => {
     useEffect(()=>{
        if(!numeroEmpleado){
         navigate("/")
+        logOut()
     } 
     },[numeroEmpleado])
     
@@ -61,6 +63,7 @@ const AuthMethod = () => {
                 console.log("token: ",res.data.data.access_token)
                 console.log("numeroDeTieda: ",res.data.noTienda)
                 localStorage.setItem("numeroEmpleado",numeroEmpleado)
+                
               }
             })
           } catch (error) {

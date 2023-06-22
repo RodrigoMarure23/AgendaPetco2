@@ -22,15 +22,31 @@ const Incidencias = () => {
   // const [diaIncio, setDiaIncio] = useState(startDay2);
   // const [diaFin, setDiaFin] = useState(startDay2);
   const [startDay, setStartDay] = useState(startDay2);
-  
+
   const [mostrarFormulario, setMostrarFormulario] = useState(false);
   const [dia, setDia] = useState();
   const [incidencia, setIncidencia] = useState("");
   const [menos, setMenos] = useState(0);
   const [mas, setMas] = useState(0);
   const [fecha, setFecha] = useState(null);
-  const [diaincio,setDiaIncio]=useState()
-  const respuesta=[]
+  const [diaincio, setDiaIncio] = useState()
+  const respuesta = []
+  const [carga,setCarga]=useState(false)
+  const incidencias = {
+    "103": "EMPLEADO DEL MES",
+    "112": "PRIMA DOMINICAL",
+    "120": "AYUDA DE TRANSPORTE",
+    "511": "ACCIDENTE DE TRANSITO",
+    "512": "ACCIDENTE DE TRABAJO",
+    "513": "INCAPACIDAD POR MATERNIDAD",
+    "515": "ENFERMEDAD GENERAL",
+    "525": "FALTANTE DE CAJA",
+    "601": "PERMISO SIN GOSE DE SUELDO",
+    "602": "FALTA INJUSTIFICADA",
+    "603": "SANCION ADMINISTRATIVA",
+    "FL": "FESTIVO LABORADO",
+    "VA": "VACACIONES"
+  };
   // const [semana0,setSemana0]=useState(null)
   // const [semana1,setSemana1]=useState(null)
   // const [semana2,setSemana2]=useState(null)
@@ -50,19 +66,19 @@ const Incidencias = () => {
     e.preventDefault();
     // setDiaSeleccionado(day.getDate())
     setDia(formatearFecha(day));
-   
+
     // console.log("mostrar Formulario"); day es el dia de hoy, hora  ala que se realiza la consulta
     setMostrarFormulario(true);
-    document.getElementById("botonGuardar").style.display = "none";
+    // document.getElementById("botonGuardar").style.display = "none";
   };
   const handleChange = (empleadoIndex, diaIndex, value, dia) => {
     // const updatedEmpleados = [...empleados];
     // updatedEmpleados[empleadoIndex].incidencias[diaIndex] = value + "--" +dia;
     // setEmpleados(updatedEmpleados);
-    if (!value || value === "default" ) {
+    if (!value || value === "default") {
       Swal.fire("Error!", "Ingresa una Incidencia!", "error");
       const updatedEmpleados = [...empleados];
-      updatedEmpleados[empleadoIndex].incidencias[diaIndex] ="" ;
+      updatedEmpleados[empleadoIndex].incidencias[diaIndex] = "";
       setEmpleados(updatedEmpleados);
       return;
     }
@@ -70,7 +86,7 @@ const Incidencias = () => {
       case "103":
         const updatedEmpleados3 = [...empleados];
         updatedEmpleados3[empleadoIndex].incidencias[diaIndex] =
-        value + "--" + "EMPLEADO DEL MES" + "--" + dia ;
+          value + "--" + "EMPLEADO DEL MES" + "--" + dia;
         setEmpleados(updatedEmpleados3);
 
         break;
@@ -183,15 +199,15 @@ const Incidencias = () => {
     const newDate = new Date(startDay);
     newDate.setDate(startDay.getDate() - 7);
     setStartDay(newDate);
-    
-  
+
+
   };
 
   const setNextWeek = () => {
     const newDate = new Date(startDay);
     newDate.setDate(startDay.getDate() + 7);
     setStartDay(newDate);
-    
+
 
   };
   const formatearFecha = (fecha) => {
@@ -206,91 +222,103 @@ const Incidencias = () => {
     for (let i = 0; i < 7; i++) {
       const date = new Date(startDate);
       date.setDate(startDate.getDate() + i);
-      console.log(formatearFecha(date) )
-      days.push(formatearFecha(date));
+
+      // console.log(formatearFecha(date))
+      days.push(date);
     }
+    // console.log("days:", days)
     return days;
   };
-  const formatearsemana=()=>{
-    days.map((dia,i)=>{
-      console.log("dats",days[i])
+  const formatearsemana = () => {
+    // days.map((dia, i) => {
+    //   console.log("dats", days[i])
 
-    })
+    // })
   }
 
   const formatDate = (date) => {
     const options = { month: "short", day: "numeric", year: "numeric" };
+    // console.log(new Intl.DateTimeFormat("es-MX", options).format(date))
     return new Intl.DateTimeFormat("es-MX", options).format(date);
   };
 
-  const days = getDaysOfWeek();
+  const formatDate2 = (date) => {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
 
- 
-  const resetearIncidencias=()=>{
-    const nuevoArray3=empleados.map(empleado=>({
+    const formattedDate = `${year}${month}${day}`;
+    return formattedDate;
+  };
+  const days = getDaysOfWeek();
+  const days2 = []
+  const copyDays = () => {
+
+    for (let i = 0; i < 7; i++) {
+      let x = formatDate2(days[i])
+      days2.push(x)
+
+    } return days2
+  }
+
+
+  const resetearIncidencias = () => {
+    const nuevoArray3 = empleados.map(empleado => ({
       ...empleado,
-      incidencias:["","","","","","",""]
+      incidencias: ["", "", "", "", "", "", ""]
     }))
     setEmpleados(nuevoArray3)
 
   }
 
-  const consultarIncidenciasDeLaSemana=()=>{
+  const consultarIncidenciasDeLaSemana = () => {
+
    
-    // setEmpleadosCopia([...empleados])
-    // function convertirFecha(fecha) {
-    //   const fechaObjeto = new Date(fecha);
-    //   const año = fechaObjeto.getFullYear();
-    //   const mes = String(fechaObjeto.getMonth() + 1).padStart(2, '0');
-    //   const dia = String(fechaObjeto.getDate()).padStart(2, '0');
-      
-    //   return `${año}${mes}${dia}`;
-    // }
-   
-    if(menos===0  && mas===0){
+
+    if (menos === 0 && mas === 0) {
       addDayDate()
       formatearsemana()
       console.log(startDay)
-      const diainico=days[0]
-      const diafin =days[6]
-      console.log("diainicio",formatearFecha(diainico))
-      console.log("diaFin: ",formatearFecha(diafin))
+      const diainico = days[0]
+      const diafin = days[6]
+      console.log("diainicio", formatearFecha(diainico))
+      console.log("diaFin: ", formatearFecha(diafin))
       console.log("semana a consultar pasada")
-      
-      return recuperadata(formatearFecha(diainico),formatearFecha(diafin))
 
-      
+      return recuperadata(formatearFecha(diainico), formatearFecha(diafin))
+
+
 
     }
- 
-    
-    if(menos===-1 && mas===-1){
+
+
+    if (menos === -1 && mas === -1) {
       resetearIncidencias()
       console.log(startDay)
       addDayDate()
-      const diainico=days[0]
-      const diafin =days[6]
-      console.log("diainicio",formatearFecha(diainico))
-      console.log("diaFin: ",formatearFecha(diafin))
+      const diainico = days[0]
+      const diafin = days[6]
+      console.log("diainicio", formatearFecha(diainico))
+      console.log("diaFin: ", formatearFecha(diafin))
       console.log("semana a consultar pasada")
-      
-      return recuperadata(formatearFecha(diainico),formatearFecha(diafin))
+
+      return recuperadata(formatearFecha(diainico), formatearFecha(diafin))
 
     }
-    if(menos===-2 && mas===-2){
+    if (menos === -2 && mas === -2) {
       addDayDate()
       resetearIncidencias()
       console.log(startDay)
-      const diainico=days[0]
-      const diafin =days[6]
-      console.log("diainicio",formatearFecha(diainico))
-      console.log("diaFin: ",formatearFecha(diafin))
+      const diainico = days[0]
+      const diafin = days[6]
+      console.log("diainicio", formatearFecha(diainico))
+      console.log("diaFin: ", formatearFecha(diafin))
       console.log("semana a consultar pasada")
-      
-      return recuperadata(formatearFecha(diainico),formatearFecha(diafin))
+
+      return recuperadata(formatearFecha(diainico), formatearFecha(diafin))
 
 
-    }else{
+    } else {
       console.log("==========")
       console.log("semana no valida")
       window.alert("SEMANA NO VALIDA")
@@ -299,58 +327,72 @@ const Incidencias = () => {
       return
     }
   }
-  
-  const recuperadata = async (diaincio,diafin) => {
-  
-        empleados.map(async (empleado, indexempleado) => {
-          try {
-            const {data} = await axios.get(
-            `https://petcomplete.petco.com.mx/asistencias/consultaIncidencias/${empleado.noemp}/${diaincio}/${diafin}`
-          );
-          console.log("incidenciasRecuperadas del empleado "+empleado.nombr, data.data);
-          if (data.replyCode == 200) {
-            const newData = [...empleados,
-              
-            ];
-           console.log("data.data",data.data.incidencias[0].fecha)
-           respuesta.push({
-            noemp:empleado.noemp,
-            incidencias:data.data.incidencias
-           })
-          //  data.data.incidencias.map((incidd,inciddIndex)=>{
-          //   if(incidd.fecha==empleado.fechas[])
-          //  })
-           newData[indexempleado].incidencias=data.data.incidencias
-           const acomodarFechasdeIncidencias=()=>{
-            empleado.fechas.map((fechax,indifechax)=>{
-            // if(data.data.incidencias[i].fecha===fechax.fecha){
-            //               newData[indexempleado].incidencias[indifechax]=data.data.incidencias[i]
-            //              return console.log("incidenciaDesdeAcomodarFechas:",empleado.incidencias[i].fecha)
-            //             }else{
-            //             return  console.log("no ay")
-            //             }
-            return console.log("fechasrecibidas:",fechax)
-            })
-            
-           }
-           acomodarFechasdeIncidencias()
-           return setEmpleados(newData); 
-           
-          }if(data.replyCode==404 || !data.data.incidencias){
-            console.log("no se encontraron incidencias")
-            return
+
+  const recuperadata = async (diaincio, diafin) => {
+    setCarga(true)
+    empleados.map(async (empleado, indexempleado) => {
+      try {
+        const { data } = await axios.get(
+          `https://petcomplete.petco.com.mx/asistencias/consultaIncidencias/${empleado.noemp}/${diaincio}/${diafin}`
+        );
+        // console.log("incidenciasRecuperadas del empleado " + empleado.nombr, data.data);
+        if (data.replyCode == 200) {
+          // document.getElementById("loader").style.display="none"
+          setCarga(false)
+          const newData = [...empleados,];
+          newData[indexempleado].incidenciasRecibidas = data.data.incidencias
+          const acomodarFechasdeIncidencias = () => {
+
+            let copyEmpleado = empleado
+            for (let i = 0; i < 7; i++) {
+              if (copyEmpleado.incidenciasRecibidas[i]) {
+                // console.log("incidenciaind", data.data.incidencias[i].incid)
+
+                let a = data.data.incidencias[i].fecha
+                let incidenciaguardada = data.data.incidencias[i]
+                // console.log("incidenciafecha", a)
+                for (let f = 0; f < 7; f++) {
+                  let b = days2[f]
+                  // console.log("B", b)
+                  if (a == b) {
+                    copyEmpleado.incidencias[f] = incidenciaguardada
+                  } else {
+
+                  }
+
+                }
+
+              }
+
+            }
+
+
           }
-          // else{
-          //   return console.log('no')
-          // }
-          } catch (error) {
-           return console.log("errorENRecuperarData: ",error)
-          }
-          // console.log("diaaaainicioyfin", startDay2)
-         
-         
-        });
+          acomodarFechasdeIncidencias()
+          empleado.incidencias.forEach(incidencia => {
+            if (incidencia.incid) {
+              console.log("incidencia:",incidencia.incid+"fecha:",incidencia.fecha)
+              incidencia.incid = getIncidenciaDescripcion(incidencia.incid);
+            }
+          });
+          // consultarIncidenciasDeLaSemana()
+          return setEmpleados(newData);
+
+        } if (data.replyCode == 404 || !data.data.incidencias) {
+          console.log("no se encontraron incidencias")
+          return
+        }
+        // else{
+        //   return console.log('no')
+        // }
+      } catch (error) {
+        return console.log("errorENRecuperarData: ", error)
       }
+      // console.log("diaaaainicioyfin", startDay2)
+
+
+    });
+  }
   const enviarIncidencia = async (
     numeroempleado,
     njefe,
@@ -383,48 +425,67 @@ const Incidencias = () => {
     // console.log("fechaaaa :",fecha)
     // console.log("indiceincidencia:",indiceinc)
   };
-  const copia3=[...empleados]
-  const addDayDate=()=>{
-    
-    const nuevoArray2= copia3.map(empleado=>({
+  const copia3 = [...empleados]
+  const addDayDate = () => {
+
+    const nuevoArray2 = copia3.map(empleado => ({
       ...empleado,
-      fechas:[{fecha:formatearFecha(days[0])},{fecha:formatearFecha(days[1])},{fecha:formatearFecha(days[2])},{fecha:formatearFecha(days[3])},{fecha:formatearFecha(days[4])},{fecha:formatearFecha(days[5])},{fecha:formatearFecha(days[6])}]
+      fechas: [{ fecha: days2[0] }, { fecha: days2[1] }, { fecha: days2[2] }, { fecha: days2[3] }, { fecha: days2[4] }, { fecha: days2[5] }, { fecha: days2[6] }]
     }))
-   setEmpleados(nuevoArray2)
-    
-     return console.log("nuevoArray",nuevoArray2)
+    setEmpleados(nuevoArray2)
+
+    return console.log("nuevoArray", nuevoArray2)
   }
-  
+
 
   // const compararFechas=()=>{
   //   if()
   // }
+  function getIncidenciaDescripcion(incidencia) {
+    return incidencias[incidencia] || "DESCONOCIDA";
+  }
   useEffect(() => {
     console.log("---------------------------");
     setDiaSeleccionado(true)
     consultarIncidenciasDeLaSemana()
-    console.log("empleados: ",empleados)
+    // console.log("empleados: ", empleados)
     addDayDate()
 
-    console.log("fechasEmpleado",empleados)
-    console.log("Respuesta:",respuesta)
-    console.log("days",days)
+    // console.log("fechasEmpleado", empleados)
+    // console.log("Respuesta:", respuesta)
+    // console.log("days", days)
+    copyDays()
+    // console.log("days2", days2)
+
     // console.log("dia",diaSeleccionado)
-    
+
     // console.log("menos",menos)
     // console.log("mas",mas)
-    
-    
-  // console.log("copia2",copia2)
-  
-    
-    
-  }, [diaSeleccionado,dia,menos,mas,incidencia]);
 
-  
+
+    // console.log("copia2",copia2)
+
+
+
+  }, [diaSeleccionado, incidencia, dia, menos, mas]);
+
+
   if (empleados.length > 0) {
+
     return (
-      <div className="calendar">
+      <div>
+        { carga && <div id="contenedor">
+  <div class="contenedor-loader">
+    <div class="rueda"></div>
+  </div>
+  <div class="cargando">Cargando...</div>
+  
+</div>
+          
+        }
+        
+        <div className="calendar">
+        
         <div className="header">
           <img
             onClick={() => {
@@ -432,14 +493,14 @@ const Incidencias = () => {
               setMenos(menos - 1);
               setMas(mas - 1);
               resetearIncidencias()
-              
+
             }}
-            
-            className={menos===-2?"imgflecha2 izq":"imgflecha izq"}
+
+            className={menos === -2 ? "imgflecha2 izq" : "imgflecha izq"}
             src="../src/assets/menorque.png"
             alt="menos"
           />
-          <p className={menos==0?"semText2":"semText"}>{`Semana del ${formatDate(
+          <p className={menos == 0 ? "semText2" : "semText"}>{`Semana del ${formatDate(
             days[0]
           )} al ${formatDate(days[6])}`}</p>
           <img
@@ -449,8 +510,8 @@ const Incidencias = () => {
               setMas(mas + 1);
               resetearIncidencias()
             }}
-            
-            className={mas===0?"imgflecha2 der":"imgflecha der"}
+
+            className={mas === 0 ? "imgflecha2 der" : "imgflecha der"}
             src="../src/assets/mayorque.png"
             alt="mas"
           />
@@ -471,31 +532,37 @@ const Incidencias = () => {
             {/* validacion para empleadosCopia de la bd */}
             {empleados.map((empleado, empleadoIndex) => (
               <tr key={empleadoIndex} className="borderTable2">
-                <td>
+                <td style={{width:"120px",height:"100px"}}>
                   <p>{empleado.nombr + " " + empleado.apepa}</p>
                 </td>
                 {days.map((day, i) => (
                   <td
                     onClick={(e) => {
-                      setEmpleadoIndex(empleadoIndex);
-                      setI(i);
-                      mostrarFormularioHandler(e, day);
-                      setFecha(formatDate(day));
-                      console.log("diapicado: ", formatearFecha(day));
-                      console.log(
-                        "empleado.incidencias[i]: ",
-                        empleado.incidencias[i]
-                      );
+                      menos === -2 ? 
+                        Swal.fire("Error!", "Solo Consulta!", "error")
+                    :
+                        (
+                        setEmpleadoIndex(empleadoIndex),
+                        setI(i),
+                        mostrarFormularioHandler(e, day),
+                        setFecha(formatDate(day)),
+                        console.log("diapicado: ", formatearFecha(day)),
+                        console.log(
+                          "empleado.incidencias[i]: ",
+                          empleado.incidencias[i]
+                        )
+                      )
                     }}
-                    className={empleado.incidencias[i]?"boderTable sinfondo":"borderTable fondomas"}
+                    className={empleado.incidencias[i].incid ? "boderTable sinfondo" : "borderTable fondomas"}
+                    style={{width:"120px",height:"100px"}}
                     key={i}>
-                    
-                     <div>
-                     { diaSeleccionado &&  <span >{empleado.incidencias[i]?empleado.incidencias[i].incid:""}</span>}
-                        </div>
-                    
-                     
-                     
+
+                    <div>
+                      {diaSeleccionado && <span >{empleado.incidencias[i] ? empleado.incidencias[i].incid : ""}</span>}
+                    </div>
+
+
+
                   </td>
                 ))}
               </tr>
@@ -552,24 +619,25 @@ const Incidencias = () => {
                         setMostrarFormulario(false);
                         // setIncidencia("")
                         // handleChange(empleadoIndex,i,"","")
-                        document.getElementById("botonGuardar").style.display =
-                          "block";
-                        const copy2 = [...empleados];
-                        copy2[empleadoIndex].incidencias[i] ="";
-                        setEmpleados(copy2);
+                        // document.getElementById("botonGuardar").style.display =
+                        //   "block";
+                        // const copy2 = [...empleados];
+                        // copy2[empleadoIndex].incidencias[i] = "";
+                        // setEmpleados(copy2);
                       }}
                     >
                       Cancelar
                     </button>
+                    
                     <button
                       className="btn"
                       type="submit"
                       onClick={(e) => {
                         e.preventDefault();
                         handleChange(empleadoIndex, i, incidencia, dia);
+                        console.log("diaaaaaa",dia)
                         setMostrarFormulario(false);
-                        document.getElementById("botonGuardar").style.display =
-                          "block";
+                        
                         setIncidencia("");
                         enviarIncidencia(
                           empleados[empleadoIndex].noemp,
@@ -578,6 +646,7 @@ const Incidencias = () => {
                           dia,
                           incidencia
                         );
+                        consultarIncidenciasDeLaSemana()
                       }}
                     >
                       Guardar
@@ -589,10 +658,9 @@ const Incidencias = () => {
           </div>
         )}
 
-        <button id="botonGuardar" className="btn  botonGuardar">
-          GuardarTODO
-        </button>
-      </div>
+        
+        </div>
+    </div>
     );
   }
   if (empleados.length == 0) {

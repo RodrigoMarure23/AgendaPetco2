@@ -4,7 +4,6 @@ import Swal from "sweetalert2";
 import { useShopContext } from '../context/ShopContext'
 import axios from "axios";
 import { format, set } from "date-fns"
-import CountdownComponent from "./CountDownComponent";
 const daysOfWeek = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"];
 
 const Calendar = () => {
@@ -27,29 +26,48 @@ const Calendar = () => {
   const [empleadosCopia, setEmpleadosCopia] = useState(null)
   const [semanaAConsultar, setSemanaAConsultar] = useState(null)
   const [carga, setCarga] = useState(false)
-//   const handleChange = (empleadoIndex, diaIndex, value, hora) => {
-//     console.log("value",value)
-//     console.log("hora",hora)
-    
-//     if (hora === "000000" ) {
-// console.log("mandaste un descanso")
+  const handleChange = (empleadoIndex, diaIndex, value, hora) => {
+    //
+    if (!hora && valor == false) {
+      Swal.fire(
+        'Error!',
+        'Ingresa una hora o define si es descanso!',
+        'error'
+      )
+      const updatedEmpleados = [...empleados];
+      updatedEmpleados[empleadoIndex].horarios[diaIndex] = "";
+      setEmpleados(updatedEmpleados)
+    }
+    if (!value && !hora) {
+      const updatedEmpleados = [...empleados];
+      updatedEmpleados[empleadoIndex].horarios[diaIndex] = value + hora;
+      setEmpleados(updatedEmpleados);
+    }
+    if (hora == "Descanso" && value) {
 
-//     let respuesta2=  empleados[empleadoIndex].horarios.filter(horario=>horario.hoini==="000000")
-//     if(respuesta2){
-//     Swal.fire(
-//       'Error!',
-//       '!Ya has registrado un dia de Descanso!',
-//       'error'
-//     ) 
-//     return
-     
+      if (empleados[empleadoIndex].descanso == true) {
+        return Swal.fire(
+          'Error!',
+          'Ya se a registrado un dia de Descanso!',
+          'error'
+        )
 
-//     }
-  
-//     }
-    
+      }
+      const updatedEmpleados = [...empleados];
+      updatedEmpleados[empleadoIndex].horarios[diaIndex] = "000000" + "//" + hora;
+      updatedEmpleados[empleadoIndex].descanso = true;
 
-//   };
+      setEmpleados(updatedEmpleados);
+
+    }
+    if (value && hora && hora != "Descanso") {
+      const updatedEmpleados = [...empleados];
+      updatedEmpleados[empleadoIndex].horarios[diaIndex] = value + "//" + hora + "-" + resultTime;
+      setEmpleados(updatedEmpleados);
+    }
+
+   return setTotal(total => total + x)
+  };
   const [mostrarBotonEntrada, setMostrarBotonEntrada] = useState(true)
   const [inputTime, setInputTime] = useState(false)
   const mostrarFormularioHandler = (e, day) => {
@@ -182,15 +200,15 @@ const Calendar = () => {
     // console.log("horafinal:", horaFinalStr)
   };
 
-  // const acomodarFechasHorarios = () => {
-  //   empleados.map((emplead, empleadIndex) => {
-  //     for (let i = 0; emplead.horariosRecibidos.length; i++) {
-  //       if (emplead.horariosRecibidos[i]) {
-  //         console.log("mplead.horariosRecibidos[i]", emplead.horariosRecibidos[i])
-  //       }
-  //     }
-  //   })
-  // }
+  const acomodarFechasHorarios = () => {
+    empleados.map((emplead, empleadIndex) => {
+      for (let i = 0; emplead.horariosRecibidos.length; i++) {
+        if (emplead.horariosRecibidos[i]) {
+          console.log("mplead.horariosRecibidos[i]", emplead.horariosRecibidos[i])
+        }
+      }
+    })
+  }
   const consultarHorariosDeLaSemana = async () => {
     setCarga(true)
    
@@ -216,7 +234,7 @@ const Calendar = () => {
                 if (empleado.horariosRecibidos[i]) {
                   for (let b = 0; b < 7; b++) {
                     if (empleado.horariosRecibidos[i].fecha == days2[b]) {
-                      // console.log(empleado.horariosRecibidos[i].fecha, days2[b])
+                      console.log(empleado.horariosRecibidos[i].fecha, days2[b])
                        empleado.horarios[b] = empleado.horariosRecibidos[i]
                     }
                   }
@@ -388,7 +406,7 @@ console.log("++++++++++++++++++++++++")
             {/* validacion para empleados de la bd */}
             {empleados.map((empleado, empleadoIndex) => (
               <tr key={empleadoIndex} className="borderTable2">
-                <td className="colorNombre" style={{ width: "120px", height: "100px" }} > <p>{empleado.nombr + " " + empleado.apepa}</p></td>
+                <td style={{ width: "120px", height: "100px" }} > <p>{empleado.nombr + " " + empleado.apepa}</p></td>
                 {days.map((day, i) => (
                   <td onClick={(e) => {
                     menos === -1 ?
@@ -479,29 +497,6 @@ console.log("++++++++++++++++++++++++")
                       }}>Cancelar</button>
                       <button className="btn" type="submit" onClick={(e) => {
                         e.preventDefault()
-                        const handleChange = (empleadoIndex, diaIndex, value, hora) => {
-                              console.log("value",value)
-                              console.log("hora",hora)
-                              
-                              if (hora === "000000" ) {
-                          console.log("mandaste un descanso")
-                          
-                              let respuesta2=  empleados[empleadoIndex].horarios.filter(horario=>horario.hoini==="000000")
-                              if(respuesta2){
-                               return Swal.fire(
-                                'Error!',
-                                '!Ya has registrado un dia de Descanso!',
-                                'error'
-                              ) 
-                             
-                              
-                            }
-                            
-                            enviarHorario(localStorage.getItem("numeroEmpleado"), empleados[empleadoIndex].sucur, semanaAConsultar, empleados[empleadoIndex].noemp, formatearFecha(day), hora, resultTime)
-                              }
-                              
-                          
-                            };
                         // document.getElementById("botonGuardar").style.display = "inline"
                         setMostrarBotonEntrada(true)
                         setMostrarFormulario(false)
@@ -510,41 +505,41 @@ console.log("++++++++++++++++++++++++")
                         if (inputTime === true) {
                           // console.log("ya existe un dia de descanso")
                           console.log("numeroJefe", localStorage.getItem("numeroEmpleado")),
-                          console.log("empleadoIndice",empleadoIndex),
                             console.log("sucur", empleados[empleadoIndex].sucur),
                             console.log("semanaAconsultar", semanaAConsultar),
                             console.log("numeroEmpleado", empleados[empleadoIndex].noemp),
                             console.log("fecha", formatearFecha(day)),
                             console.log("hoini", hora),
                             console.log("hofin", resultTime)
-                            setHora(null)
-                            setResultTime(null)
-                            
-                          } else {
-                            
-                         handleChange(empleadoIndex, i, formatearFecha(day), "000000"),
-                            console.log("empleadoIndice",empleadoIndex),
-                            console.log("numeroJefe", localStorage.getItem("numeroEmpleado")),
+                          enviarHorario(localStorage.getItem("numeroEmpleado"), empleados[empleadoIndex].sucur, semanaAConsultar, empleados[empleadoIndex].noemp, formatearFecha(day), hora, resultTime)
+
+
+                        } else {
+                          console.log("numeroJefe", localStorage.getItem("numeroEmpleado")),
                             console.log("sucur", empleados[empleadoIndex].sucur),
                             console.log("semanaAconsultar", semanaAConsultar),
                             console.log("numeroEmpleado", empleados[empleadoIndex].noemp),
                             console.log("fecha", formatearFecha(day)),
                             console.log("hoini", convertirFormatoHora(hora)),
                             console.log("hofin", convertirFormatoHora(resultTime))
-                            // enviarHorario(localStorage.getItem("numeroEmpleado"), empleados[empleadoIndex].sucur, semanaAConsultar, empleados[empleadoIndex].noemp, formatearFecha(day), hora, resultTime)
-                            setHora(null)
-                            setResultTime(null)
-                          }
-                          if(!hora && !inputTime===false){
-                          return Swal.fire("Registra un Horario o Descanso","Error","error")
-                          }
-                          // enviarHorario(localStorage.getItem("numeroEmpleado"), empleados[empleadoIndex].sucur, semanaAConsultar, empleados[empleadoIndex].noemp, formatearFecha(day), hora, resultTime)
+                          enviarHorario(localStorage.getItem("numeroEmpleado"), empleados[empleadoIndex].sucur, semanaAConsultar, empleados[empleadoIndex].noemp, formatearFecha(day), hora, resultTime)
+
+                        }
+                        // if (valor == false) {
+
+                        //   handleChange(empleadoIndex, i, dia, hora);
+                        //   sumarHoras()
+                        // }
+                        // if (valor == true) {
+
+                        //   handleChange(empleadoIndex, i, dia, "Descanso");
+                        // }
 
                         // enviarHorario(localStorage.getItem("numeroEmpleado"), empleados[empleadoIndex].sucur, semanaAConsultar, empleados[empleadoIndex].noemp, formatearFecha(day), hora, resultTime),
                         consultarHorariosDeLaSemana()
-                        setHora(null)
-                        setResultTime(null)
-                        // setTotal(total => total + x)
+                        setHora()
+                        setResultTime()
+                        setTotal(total => total + x)
                       }
 
                         // document.getElementById("botonMas").style.display="none"
@@ -564,16 +559,6 @@ console.log("++++++++++++++++++++++++")
 
 
       </div>
-      {
-                total <= "99.8" ?
-                  <div className="CuentaAtras">
-                    <CountdownComponent ></CountdownComponent>
-                  </div> :
-                  <div className="CuentaAtras">
-                    <p className="btn">Copiar Horario a siguiente semana</p>
-                  </div>
-
-              }
       </div>
     );
   }

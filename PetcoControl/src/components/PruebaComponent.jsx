@@ -3,12 +3,12 @@ import moment from 'moment';
 
 const Calendar = () => {
   const [weekStart, setWeekStart] = useState(moment().startOf('week'));
-  
+
   const days = [];
   for (let i = 0; i < 7; i++) {
     days.push(moment(weekStart).add(i, 'days'));
   }
-  
+
   return (
     <div>
       <h3>Semana del {weekStart.format('D')} al {moment(days[6]).format('D MMMM')}</h3>

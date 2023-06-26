@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import "../styles/index.css"
 import { useNavigate } from 'react-router-dom'
 const Photo = () => {
-  const navigate =useNavigate()
+  const navigate = useNavigate()
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
   const [imgDataUrl, setImgDataUrl] = useState(null);
@@ -45,7 +45,7 @@ const Photo = () => {
   //   const videoElement = videoRef.current;
   //   videoElement.style.display = 'none';
   // };
-  
+
   // }
   function capture() {
     const canvas = canvasRef.current;
@@ -62,7 +62,7 @@ const Photo = () => {
     // <div className='contenedorPrincipal'>
     //   <img style={{height:"20px"}} src="../src/assets/logoPetco1.png" alt="" height="100px"/>
     //   <div style={{height:"500px"}}>
-        
+
     //     <h5>PhotoID</h5>
     //   <video className='fotoInput' ref={videoRef} width="320" height="240" />
     //   {/* <button onClick={capture}>Capturar imagen</button> */}
@@ -80,22 +80,22 @@ const Photo = () => {
     // <</div>
     //   <button className='btn3' onClick={()=>{
     //     navigate("/home/agenda")
-        
+
     //   }}>Ingresar</button>
     // </div>>
     <div className='contenedorPrincipal'>
       <div>
-        <div style={{display:"grid", justifyContent:"center"}} className=''>
+        <div style={{ display: "grid", justifyContent: "center" }} className=''>
           <h1>Bienvenido</h1>
           <label>Usuario: <input type="text" /></label>
           <label>Password: <input type="password" /></label>
         </div>
       </div>
-        <div>
-          <button className='btn3' onClick={()=>{
-            navigate("/home/agenda")
-            }}>Ingresar</button>
-          </div>
+      <div>
+        <button className='btn3' onClick={() => {
+          navigate("/home/agenda")
+        }}>Ingresar</button>
+      </div>
     </div>
   )
 }

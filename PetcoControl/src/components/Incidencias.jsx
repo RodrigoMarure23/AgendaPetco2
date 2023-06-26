@@ -31,7 +31,7 @@ const Incidencias = () => {
   const [fecha, setFecha] = useState(null);
   const [diaincio, setDiaIncio] = useState()
   const respuesta = []
-  const [carga,setCarga]=useState(false)
+  const [carga, setCarga] = useState(false)
   const incidencias = {
     "103": "EMPLEADO DEL MES",
     "112": "PRIMA DOMINICAL",
@@ -45,7 +45,8 @@ const Incidencias = () => {
     "602": "FALTA INJUSTIFICADA",
     "603": "SANCION ADMINISTRATIVA",
     "FL": "FESTIVO LABORADO",
-    "VA": "VACACIONES"
+    "VA": "VACACIONES",
+    "NULO": ""
   };
   // const [semana0,setSemana0]=useState(null)
   // const [semana1,setSemana1]=useState(null)
@@ -75,7 +76,7 @@ const Incidencias = () => {
     // const updatedEmpleados = [...empleados];
     // updatedEmpleados[empleadoIndex].incidencias[diaIndex] = value + "--" +dia;
     // setEmpleados(updatedEmpleados);
-    if (!value || value === "default") {
+    if (!value ) {
       Swal.fire("Error!", "Ingresa una Incidencia!", "error");
       const updatedEmpleados = [...empleados];
       updatedEmpleados[empleadoIndex].incidencias[diaIndex] = "";
@@ -185,6 +186,12 @@ const Incidencias = () => {
           value + "--" + "VACACIONES" + "--" + dia;
         setEmpleados(updatedEmpleados15);
 
+      case "NULO":
+        const updatedEmpleados16 = [...empleados];
+        updatedEmpleados16[empleadoIndex].incidencias[diaIndex] =
+          value + "--" + "" + "--" + dia;
+        setEmpleados(updatedEmpleados16);
+
         break;
       default:
         break;
@@ -194,6 +201,7 @@ const Incidencias = () => {
       updatedEmpleados[empleadoIndex].incidencias[diaIndex] = value + dia;
       setEmpleados(updatedEmpleados);
     }
+
   };
   const setPrevWeek = () => {
     const newDate = new Date(startDay);
@@ -273,7 +281,7 @@ const Incidencias = () => {
 
   const consultarIncidenciasDeLaSemana = () => {
 
-   
+
 
     if (menos === 0 && mas === 0) {
       addDayDate()
@@ -344,7 +352,7 @@ const Incidencias = () => {
           const acomodarFechasdeIncidencias = () => {
 
             let copyEmpleado = empleado
-            for (let i = 0; i < 7; i++) {
+            for (let i = 0; i < copyEmpleado.incidenciasRecibidas.length; i++) {
               if (copyEmpleado.incidenciasRecibidas[i]) {
                 // console.log("incidenciaind", data.data.incidencias[i].incid)
 
@@ -371,7 +379,7 @@ const Incidencias = () => {
           acomodarFechasdeIncidencias()
           empleado.incidencias.forEach(incidencia => {
             if (incidencia.incid) {
-              console.log("incidencia:",incidencia.incid+"fecha:",incidencia.fecha)
+              console.log("incidencia:", incidencia.incid + "fecha:", incidencia.fecha)
               incidencia.incid = getIncidenciaDescripcion(incidencia.incid);
             }
           });
@@ -379,6 +387,7 @@ const Incidencias = () => {
           return setEmpleados(newData);
 
         } if (data.replyCode == 404 || !data.data.incidencias) {
+          setCarga(false)
           console.log("no se encontraron incidencias")
           return
         }
@@ -418,7 +427,10 @@ const Incidencias = () => {
       }
     );
     console.log("respuestaGuardarEnviarIncidencia: ", sendend.data);
-    Swal.fire("Success!", "Incidencia Registrada Exitosamente!", "success");
+    Swal.fire("Exito!", "Incidencia Registrada Exitosamente!", "success");
+    consultarIncidenciasDeLaSemana()
+    
+   
     // console.log("numeroEmpleadoo :",numeroempleado)
     // console.log("njefeee :",njefe)
     // console.log("sucurrrr :",sucur)
@@ -442,7 +454,7 @@ const Incidencias = () => {
   //   if()
   // }
   function getIncidenciaDescripcion(incidencia) {
-    return incidencias[incidencia] || "DESCONOCIDA";
+    return incidencias[incidencia] || "";
   }
   useEffect(() => {
     console.log("---------------------------");
@@ -467,200 +479,202 @@ const Incidencias = () => {
 
 
 
-  }, [diaSeleccionado, incidencia, dia, menos, mas]);
+  }, [diaSeleccionado,  dia, menos, mas,carga]);
 
 
   if (empleados.length > 0) {
 
     return (
       <div>
-        { carga && <div id="contenedor">
-  <div class="contenedor-loader">
-    <div class="rueda"></div>
-  </div>
-  <div class="cargando">Cargando...</div>
-  
-</div>
-          
-        }
-        
-        <div className="calendar">
-        
-        <div className="header">
-          <img
-            onClick={() => {
-              setPrevWeek();
-              setMenos(menos - 1);
-              setMas(mas - 1);
-              resetearIncidencias()
+        {carga && <div className="contenedorr">
+          <div class="contenedor-loader">
+            <div class="rueda"></div>
+          </div>
+          <div class="cargando">Cargando...</div>
 
-            }}
-
-            className={menos === -2 ? "imgflecha2 izq" : "imgflecha izq"}
-            src="../src/assets/menorque.png"
-            alt="menos"
-          />
-          <p className={menos == 0 ? "semText2" : "semText"}>{`Semana del ${formatDate(
-            days[0]
-          )} al ${formatDate(days[6])}`}</p>
-          <img
-            onClick={() => {
-              setNextWeek();
-              setMenos(menos + 1);
-              setMas(mas + 1);
-              resetearIncidencias()
-            }}
-
-            className={mas === 0 ? "imgflecha2 der" : "imgflecha der"}
-            src="../src/assets/mayorque.png"
-            alt="mas"
-          />
         </div>
-        <table className="tabla">
-          <thead>
-            <tr>
-              <th>Nombre de Empleado</th>
-              {days.map((day, i) => (
-                <th key={i}>
-                  {daysOfWeek[i] + " "}
-                  {day.getDate()}
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody className="borderR">
-            {/* validacion para empleadosCopia de la bd */}
-            {empleados.map((empleado, empleadoIndex) => (
-              <tr key={empleadoIndex} className="borderTable2">
-                <td style={{width:"120px",height:"100px"}}>
-                  <p>{empleado.nombr + " " + empleado.apepa}</p>
-                </td>
+
+        }
+
+        <div className="calendar">
+
+          <div className="header">
+            <img
+              onClick={() => {
+                setPrevWeek();
+                setMenos(menos - 1);
+                setMas(mas - 1);
+                resetearIncidencias()
+
+              }}
+
+              className={menos === -2 ? "imgflecha2 izq" : "imgflecha izq"}
+              src="../src/assets/menorque.png"
+              alt="menos"
+            />
+            <p className={menos == 0 ? "semText2" : "semText"}>{`Semana del ${formatDate(
+              days[0]
+            )} al ${formatDate(days[6])}`}</p>
+            <img
+              onClick={() => {
+                setNextWeek();
+                setMenos(menos + 1);
+                setMas(mas + 1);
+                resetearIncidencias()
+              }}
+
+              className={mas === 0 ? "imgflecha2 der" : "imgflecha der"}
+              src="../src/assets/mayorque.png"
+              alt="mas"
+            />
+          </div>
+          <table className="tabla">
+            <thead>
+              <tr>
+                <th>Nombre de Empleado</th>
                 {days.map((day, i) => (
-                  <td
-                    onClick={(e) => {
-                      menos === -2 ? 
-                        Swal.fire("Error!", "Solo Consulta!", "error")
-                    :
-                        (
-                        setEmpleadoIndex(empleadoIndex),
-                        setI(i),
-                        mostrarFormularioHandler(e, day),
-                        setFecha(formatDate(day)),
-                        console.log("diapicado: ", formatearFecha(day)),
-                        console.log(
-                          "empleado.incidencias[i]: ",
-                          empleado.incidencias[i]
-                        )
-                      )
-                    }}
-                    className={empleado.incidencias[i].incid ? "boderTable sinfondo" : "borderTable fondomas"}
-                    style={{width:"120px",height:"100px"}}
-                    key={i}>
-
-                    <div>
-                      {diaSeleccionado && <span >{empleado.incidencias[i] ? empleado.incidencias[i].incid : ""}</span>}
-                    </div>
-
-
-
-                  </td>
+                  <th key={i}>
+                    {daysOfWeek[i] + " "}
+                    {day.getDate()}
+                  </th>
                 ))}
               </tr>
-            ))}
-          </tbody>
-        </table>
-        {/* validacion para mostrar formulario */}
-        {mostrarFormulario && (
-          <div className="formularioHorario ">
-            <div>
-              <form className="Formulario">
-                <div className="centrar">
-                  <div>
-                    <h1 style={{ color: "#0304f5" }}>Incidencia</h1>
-                    <div className="inLine">
-                      <label>Nombre: </label>{" "}
-                      <p>{empleados[empleadoIndex].nombr}</p>
+            </thead>
+            <tbody className="borderR">
+              {/* validacion para empleadosCopia de la bd */}
+              {empleados.map((empleado, empleadoIndex) => (
+                <tr key={empleadoIndex} className="borderTable2">
+                  <td className="colorNombre" style={{ width: "120px", height: "100px" }}>
+                    <p>{empleado.nombr + " " + empleado.apepa}</p>
+                  </td>
+                  {days.map((day, i) => (
+                    <td
+                      onClick={(e) => {
+                        menos === -2 ?
+                          Swal.fire("Error!", "Solo Consulta!", "error")
+                          :
+                          (
+                            setEmpleadoIndex(empleadoIndex),
+                            setI(i),
+                            mostrarFormularioHandler(e, day),
+                            setFecha(formatDate(day)),
+                            console.log("diapicado: ", formatearFecha(day)),
+                            console.log(
+                              "empleado.incidencias[i]: ",
+                              empleado.incidencias[i]
+                            )
+                          )
+                      }}
+                      className={empleado.incidencias[i].incid ? "boderTable sinfondo" : "borderTable fondomas"}
+                      style={{ width: "120px", height: "100px" }}
+                      key={i}>
+
+                      <div>
+                        {diaSeleccionado && <span >{empleado.incidencias[i] ? empleado.incidencias[i].incid : ""}</span>}
+                      </div>
+
+
+
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          {/* validacion para mostrar formulario */}
+          {mostrarFormulario && (
+            <div className="formularioHorario ">
+              <div>
+                <form className="Formulario">
+                  <div className="centrar">
+                    <div>
+                      <h1 style={{ color: "#0304f5" }}>Incidencia</h1>
+                      <div className="inLine">
+                        <label>Nombre: </label>{" "}
+                        <p>{empleados[empleadoIndex].nombr}</p>
+                      </div>
+                      <div className="inLine">
+                        <label>Fecha</label>
+                        <label>{fecha}</label>
+                      </div>
+                      <div className="inLine">
+                        <label>Incidencia: </label>
+                        <select
+                        defaultValue="103"
+                          id="options"
+                          onChange={(e) => {
+                            setIncidencia(e.target.value);
+                          }}
+                        >
+                          <option defaultChecked value="103">EMPLEADO DEL MES</option>
+                          <option value="112">PRIMA DOMINICAL</option>
+                          <option value="120">AYUDA DE TRANSPORTE</option>
+                          <option value="511">ACCIDENTE DE TRAYECTO</option>
+                          <option value="512">ACCIDENTE DE TRABAJO</option>
+                          <option value="513">INCAPACIDAD POR MATERNIDAD</option>
+                          <option value="515">INCAPACIDAD POR ENFERMEDAD GNRAL</option>
+                          <option value="525">FALTANTE DE CAJA</option>
+                          <option value="601">PERMISO SIN GOSE DE SUELDO</option>
+                          <option value="602">FALTA INJUSTIFICADA</option>
+                          <option value="603">SANCION ADMINISTRATIVA</option>
+                          <option value="FL">FESTIVO LABORADO</option>
+                          <option value="VA">VACACIONES</option>
+                          <option value=" ">NINGUNO</option>
+                        </select>
+                      </div>
                     </div>
+
                     <div className="inLine">
-                      <label>Fecha</label>
-                      <label>{fecha}</label>
-                    </div>
-                    <div className="inLine">
-                      <label>Incidencia: </label>
-                      <select
-                        id="options"
-                        onChange={(e) => {
-                          setIncidencia(e.target.value);
+                      <button
+                        className="btn2"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          setMostrarFormulario(false);
+                          setIncidencia("")
+                          // consultarIncidenciasDeLaSemana()
+                          // handleChange(empleadoIndex,i,"","")
+                          // document.getElementById("botonGuardar").style.display =
+                          //   "block";
+                          // const copy2 = [...empleados];
+                          // copy2[empleadoIndex].incidencias[i] = "";
+                          // setEmpleados(copy2);
                         }}
                       >
-                        <option value="default">ninguno</option>
-                        <option value="103">EMPLEADO DEL MES</option>
-                        <option value="112">PRIMA DOMINICAL</option>
-                        <option value="120">AYUDA DE TRANSPORTE</option>
-                        <option value="511">ACCIDENTE DE TRAYECTO</option>
-                        <option value="512">ACCIDENTE DE TRABAJO</option>
-                        <option value="513">INCAPACIDAD POR MATERNIDAD</option>
-                        <option value="515">INCAPACIDAD POR ENFERMEDAD GNRAL</option>
-                        <option value="525">FALTANTE DE CAJA</option>
-                        <option value="601">PERMISO SIN GOSE DE SUELDO</option>
-                        <option value="602">FALTA INJUSTIFICADA</option>
-                        <option value="603">SANCION ADMINISTRATIVA</option>
-                        <option value="FL">FESTIVO LABORADO</option>
-                        <option value="VA">VACACIONES</option>
-                      </select>
+                        Cancelar
+                      </button>
+
+                      <button
+                        className="btn"
+                        type="submit"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          handleChange(empleadoIndex, i, incidencia, dia);
+                          console.log("diaaaaaa", dia)
+                          setMostrarFormulario(false);
+                          console.log("incidenciaaaaaaaaaaa", incidencia)
+                          enviarIncidencia(
+                            empleados[empleadoIndex].noemp,
+                            empleados[empleadoIndex].njefe,
+                            localStorage.getItem("numeroTienda"),
+                            dia,
+                            incidencia
+                          );
+                          setIncidencia("");
+                          // consultarIncidenciasDeLaSemana()
+                        }}
+                      >
+                        Guardar
+                      </button>
                     </div>
                   </div>
-
-                  <div className="inLine">
-                    <button
-                      className="btn2"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        setMostrarFormulario(false);
-                        // setIncidencia("")
-                        // handleChange(empleadoIndex,i,"","")
-                        // document.getElementById("botonGuardar").style.display =
-                        //   "block";
-                        // const copy2 = [...empleados];
-                        // copy2[empleadoIndex].incidencias[i] = "";
-                        // setEmpleados(copy2);
-                      }}
-                    >
-                      Cancelar
-                    </button>
-                    
-                    <button
-                      className="btn"
-                      type="submit"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        handleChange(empleadoIndex, i, incidencia, dia);
-                        console.log("diaaaaaa",dia)
-                        setMostrarFormulario(false);
-                        
-                        setIncidencia("");
-                        enviarIncidencia(
-                          empleados[empleadoIndex].noemp,
-                          empleados[empleadoIndex].njefe,
-                          localStorage.getItem("numeroTienda"),
-                          dia,
-                          incidencia
-                        );
-                        consultarIncidenciasDeLaSemana()
-                      }}
-                    >
-                      Guardar
-                    </button>
-                  </div>
-                </div>
-              </form>
+                </form>
+              </div>
             </div>
-          </div>
-        )}
+          )}
 
-        
+
         </div>
-    </div>
+      </div>
     );
   }
   if (empleados.length == 0) {

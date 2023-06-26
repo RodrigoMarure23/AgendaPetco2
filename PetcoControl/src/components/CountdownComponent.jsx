@@ -29,7 +29,7 @@ const CountdownComponent = () => {
 
   return (
     <div>
-      <label style={{fontWeight:"bolder",color:"black"}}>Tiempo restante para completar semana de horarios: <span style={{color:"red"}}>{countdown}</span> </label>
+      <label style={{ fontWeight: "bolder", color: "black" }}>Tiempo restante para completar semana de horarios: <span style={{ color: "red" }}>{countdown}</span> </label>
     </div>
   );
 };

@@ -14,7 +14,7 @@ const Agenda = () => {
   const [componenteActivo, setComponenteActivo] = useState("A")
   const [textoTienda, setTextoTienda] = useState("")
   const [aux, setAux] = useState("")
-
+ const {menosGlobal,setMenosGlobal}=useShopContext()
   const [empleadosRecuperados, setEmpleadosRecuperados] = useState("")
   const [empleadosFinales, setEmpleadosFinales] = useState("")
   const [fechaLimite, setFechaLimite] = useState(null)
@@ -103,19 +103,19 @@ const Agenda = () => {
                   <div class="progress-bar progress-bar-striped custom-color progress-bar-animated" style={{ width: `${total}%` }}></div>
                 </div>
               </p>
-              {
+              {/* {
                 textoRuta === "Agenda" ?
-                  <div>
+                 (<div> {menos==-1?
                     <nav class="navbar navbar-light bg-light">
-                      {/* <form class=" enlinea" style={{ gap: "5px" }} >
-                        <input class="form-control mr-sm-2" type="search" placeholder="Ingresa fecha a buscar" aria-label="Search" />
+                       
                         <button class="btn  my-2 my-sm-0" type="submit" onClick={(e) => {
                           e.preventDefault()
-                        }}>Buscar</button> */}
-                      {/* </form> */}
-                    </nav>
-                  </div> : null
-              }
+                        }}>Copiar Semana Anterior</button> 
+                     
+                    </nav>:null} 
+
+                  </div> ) : null
+              } */}
               <div className="gap">
                 <button id="boton1"
                   className={componenteActivo === "A" ? "btn" : "btn gris"}

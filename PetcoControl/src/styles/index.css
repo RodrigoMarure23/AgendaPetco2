@@ -5,10 +5,13 @@ html {
   /* font-family: 'Konkhmer Sleokchher', cursive; */
   /* font-family: 'Konkhmer Sleokchher', cursive;
 font-family: 'Signika', sans-serif; */
-  font-family: 'Noto Sans TC', sans-serif;
+  font-family: 'hola', sans-serif;
 
 }
-
+@font-face {
+  font-family: "hola";
+  src: url("src\styles\FONTS\PetcoCircularWeb-Regular.woff") format("woff");
+}
 .fotoInput {
   height: 500px;
   border-radius: 100%;

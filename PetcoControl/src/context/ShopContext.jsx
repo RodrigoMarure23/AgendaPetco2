@@ -25,7 +25,6 @@ const [infoTiendaGlobal,setInfoTiendaGlobal]=useState("Tienda numero 9999 MIYANA
     const cache=window.localStorage.data ? JSON.parse(window.localStorage.data) :[]
     return cache
   })
-
   const isCache = data.length===0
   const saveSchedule=(entries=[])=>{
     if(isCache){ //convierte cache en un objeto tipo JSON
@@ -45,7 +44,6 @@ const [infoTiendaGlobal,setInfoTiendaGlobal]=useState("Tienda numero 9999 MIYANA
   }
   return{
     empleados,setEmpleados,
-    
     infoTiendaGlobal,
     data,
     isCache,setTextoRuta,

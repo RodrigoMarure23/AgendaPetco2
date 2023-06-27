@@ -15,7 +15,7 @@ const daysOfWeek = [
   "Domingo",
 ];
 
-const Incidencias = () => {
+const Incidencias2= () => {
   const { empleados, setEmpleados } = useShopContext();
   const [diaSeleccionado, setDiaSeleccionado] = useState(null);
   const startDay2 = new Date();
@@ -337,8 +337,8 @@ const Incidencias = () => {
   }
 
   const recuperadata = async (diaincio, diafin) => {
-    setCarga(true)
-    empleados.map(async (empleado, indexempleado) => {
+    setCarga(false)
+ const promesas=   empleados.map(async (empleado, indexempleado) => {
       try {
         const { data } = await axios.get(
           `https://petcomplete.petco.com.mx/asistencias/consultaIncidencias/${empleado.noemp}/${diaincio}/${diafin}`
@@ -373,7 +373,7 @@ const Incidencias = () => {
               }
 
             }
-            setCarga(false)
+            // setCarga(false)
             
           }
           acomodarFechasdeIncidencias()
@@ -388,7 +388,7 @@ const Incidencias = () => {
           return setEmpleados(newData);
 
         } if (data.replyCode == 404 || !data.data.incidencias) {
-          setCarga(false)
+        //   setCarga(false)
           // console.log("no se encontraron incidencias")
           return
         }
@@ -402,7 +402,17 @@ const Incidencias = () => {
 
 
     });
+    Promise.all(promesas)
+  .then(()=>{
+    setCarga(false)
+  }).catch(
+    (error)=>{
+        setCarga(false)
+        console.log("ErrorenPromiseAll",error)
+    }
+  )
   }
+  
   const enviarIncidencia = async (
     numeroempleado,
     njefe,
@@ -477,10 +487,10 @@ const Incidencias = () => {
 
 
     // console.log("copia2",copia2)
-    // setCarga(true)
+    setCarga(true)
 
 
-  }, [ menos, mas,dia]);
+  }, [ menos, mas,]);
 // ,carga
 
   if (empleados.length > 0) {
@@ -715,4 +725,4 @@ const Incidencias = () => {
   }
 };
 
-export default Incidencias;
+export default Incidencias2;

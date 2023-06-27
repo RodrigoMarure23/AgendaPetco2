@@ -1,0 +1,120 @@
+/*
+ * Legal Disclaimer
+ *
+ * * These web fonts are licensed exclusively for use on the following:
+ * Web domains belonging to Petco.
+ *
+ * It is strictly forbidden to download or use these fonts on any other website domain or media.
+    
+ *
+ * While the @font-face statements below may be modified by the client, this
+ * disclaimer may not be removed.
+ *
+ * Lineto.com, 2020
+ */
+
+
+/*
+ *
+ * INSTRUCTIONS
+ *
+ * Copy the Legal Disclaimer and the @font-faces statements to your regular CSS file.
+ * The fonts folder(s) should be placed relative to the regular CSS file.
+ *
+ */
+
+@font-face {
+	font-family: "Petco Circular CAP Web Black";
+	src:url("PetcoCircularCAPWeb-Black.woff2") format("woff2"),
+	    url("PetcoCircularCAPWeb-Black.woff") format("woff");
+}
+
+@font-face {
+	font-family: "Petco Circular CAP Web Black Italic";
+	src:url("PetcoCircularCAPWeb-BlackItalic.woff2") format("woff2"),
+	    url("PetcoCircularCAPWeb-BlackItalic.woff") format("woff");
+}
+
+@font-face {
+	font-family: "Petco Circular CAP Web Bold";
+	src:url("PetcoCircularCAPWeb-Bold.woff2") format("woff2"),
+	    url("PetcoCircularCAPWeb-Bold.woff") format("woff");
+}
+
+@font-face {
+	font-family: "Petco Circular CAP Web Bold Italic";
+	src:url("PetcoCircularCAPWeb-BoldItalic.woff2") format("woff2"),
+	    url("PetcoCircularCAPWeb-BoldItalic.woff") format("woff");
+}
+
+@font-face {
+	font-family: "Petco Circular CAP Web Book";
+	src:url("PetcoCircularCAPWeb-Book.woff2") format("woff2"),
+	    url("PetcoCircularCAPWeb-Book.woff") format("woff");
+}
+
+@font-face {
+	font-family: "Petco Circular CAP Web Book Italic";
+	src:url("PetcoCircularCAPWeb-BookItalic.woff2") format("woff2"),
+	    url("PetcoCircularCAPWeb-BookItalic.woff") format("woff");
+}
+
+@font-face {
+	font-family: "Petco Circular CAP Web Light";
+	src:url("PetcoCircularCAPWeb-Light.woff2") format("woff2"),
+	    url("PetcoCircularCAPWeb-Light.woff") format("woff");
+}
+
+@font-face {
+	font-family: "Petco Circular CAP Web Light Italic";
+	src:url("PetcoCircularCAPWeb-LightItalic.woff2") format("woff2"),
+	    url("PetcoCircularCAPWeb-LightItalic.woff") format("woff");
+}
+
+@font-face {
+	font-family: "Petco Circular CAP Web Medium";
+	src:url("PetcoCircularCAPWeb-Medium.woff2") format("woff2"),
+	    url("PetcoCircularCAPWeb-Medium.woff") format("woff");
+}
+
+@font-face {
+	font-family: "Petco Circular CAP Web Medium Italic";
+	src:url("PetcoCircularCAPWeb-MediumItalic.woff2") format("woff2"),
+	    url("PetcoCircularCAPWeb-MediumItalic.woff") format("woff");
+}
+
+@font-face {
+	font-family: "Petco Circular CAP Web Regular";
+	src:url("PetcoCircularCAPWeb-Regular.woff2") format("woff2"),
+	    url("PetcoCircularCAPWeb-Regular.woff") format("woff");
+}
+
+@font-face {
+	font-family: "Petco Circular CAP Web Italic";
+	src:url("PetcoCircularCAPWeb-Italic.woff2") format("woff2"),
+	    url("PetcoCircularCAPWeb-Italic.woff") format("woff");
+}
+
+@font-face {
+	font-family: "Petco Circular CAP Web Thin";
+	src:url("PetcoCircularCAPWeb-Thin.woff2") format("woff2"),
+	    url("PetcoCircularCAPWeb-Thin.woff") format("woff");
+}
+
+@font-face {
+	font-family: "Petco Circular CAP Web Thin Italic";
+	src:url("PetcoCircularCAPWeb-ThinItalic.woff2") format("woff2"),
+	    url("PetcoCircularCAPWeb-ThinItalic.woff") format("woff");
+}
+
+@font-face {
+	font-family: "Petco Circular CAP Web Ultra";
+	src:url("PetcoCircularCAPWeb-Ultra.woff2") format("woff2"),
+	    url("PetcoCircularCAPWeb-Ultra.woff") format("woff");
+}
+
+@font-face {
+	font-family: "Petco Circular CAP Web Ultra Italic";
+	src:url("PetcoCircularCAPWeb-UltraItalic.woff2") format("woff2"),
+	    url("PetcoCircularCAPWeb-UltraItalic.woff") format("woff");
+}

@@ -10,6 +10,7 @@ import Public from '../guards/Public'
 import Private from "../guards/Private"
 import Welcome from '../components/Welcome'
 import AuthMethod from '../components/AuthMethod'
+import Incidencias2 from '../components/Incidencias2,'
 const Paths = () => {
   return (
     <Router>
@@ -20,7 +21,7 @@ const Paths = () => {
 
               <Route path='/home'  element={<Private><App/></Private>}>
               <Route path='agenda' element={<Calendar/>}/>
-              <Route path='incidencias' element={<Incidencias/>}/>
+              <Route path='incidencias' element={<Incidencias2/>}/>
               <Route path='fotografias' element={<Fotografias/>}/>
               {/* <Route path='*' element={<ErrorPage/>} /> */}
             </Route>

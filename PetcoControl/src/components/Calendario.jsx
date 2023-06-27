@@ -241,11 +241,11 @@ const Calendar = () => {
                   // console.log("mplead.horariosRecibidos[i]", empleado.nombr, empleado.horariosRecibidos[i])
                 }
               }
-
+              setCarga(false)
             }
             setEmpleados(newData)
             acomodarFechasHorarios()
-            setCarga(false)
+            // setCarga(false)
                   return
           }
 
@@ -378,8 +378,11 @@ console.log("++++++++++++++++++++++++")
 
           }} className={menos === -1 ? "imgflecha2 izq" : "imgflecha izq"} src="../src/assets/menorque.png" alt="menos" />
           <div>
-            <p className={menos === 0 ? "semText2" : "semText"}>{`Semana del ${formatDate(days[0])} al ${formatDate(days[6])}`}</p>
+            <p className={menos === 0 ? "semText2" : "semText"}>{`Semana del ${formatDate(days[0])} al ${formatDate(days[6])}`}<span style={{fontSize:"8px"}}>-- {semanaAConsultar}</span></p>
+            {menos==0||menos==1?<button class="btn" type="submit" onClick={(e) => {e.preventDefault()}}>Copiar Semana Anterior <span style={{fontSize:"12px"}}>-- {semanaAConsultar-1}</span></button> :null } 
 
+                 
+              
           </div>
           <img onClick={() => {
             getWeekNumber()
@@ -406,10 +409,10 @@ console.log("++++++++++++++++++++++++")
             {/* validacion para empleados de la bd */}
             {empleados.map((empleado, empleadoIndex) => (
               <tr key={empleadoIndex} className="borderTable2">
-                <td style={{ width: "120px", height: "100px" }} > <p>{empleado.nombr + " " + empleado.apepa}</p></td>
+                <td  className="colorNombre"style={{ width: "120px", height: "100px" }} > <p>{empleado.nombr + " " + empleado.apepa}</p></td>
                 {days.map((day, i) => (
                   <td onClick={(e) => {
-                    menos === -1 ?
+                    menos === -1 || menos==0 ?
                       Swal.fire("Error!", "Solo Consulta!", "error")
                       : (
                         setEmpleadoIndex(empleadoIndex),
@@ -423,7 +426,8 @@ console.log("++++++++++++++++++++++++")
 
                   }} id="celdaInfo" className={empleado.horarios[i] ? "boderTable sinfondo" : "borderTable fondomas"} key={i} style={{ width: "120px", height: "100px" }}>
                     <div id="divCelda"  >   {/* <img id="botonMas" src="../src/assets/mas.png" height={"15px"} alt="" /> */}
-                      {diaSeleccionado && <span style={{ height: "100px" }} >{empleado.horarios[i].hoini==="000000"? "DESCANSO" :(empleado.horarios[i]?empleado.horarios[i].hoini.slice(0,5)+"-"+empleado.horarios[i].hofin.slice(0,5):"")}</span>}
+                      {diaSeleccionado && <span style={{ height: "100px" }} >{empleado.horarios[i].hoini==="000000"? "DESCANSO" :(empleado.horarios[i]?empleado.horarios[i].hoini.slice(0,2)+":"+empleado.horarios[i].hoini.slice(2,4)+"-"+empleado.horarios[i].hofin.slice(0,2)+":"+empleado.horarios[i].hofin.slice(2,4):"")}</span>}
+
                     </div>
                   </td>
                 ))}
@@ -503,6 +507,7 @@ console.log("++++++++++++++++++++++++")
                         // console.log("hora: ", hora);
                         setValor(false)
                         if (inputTime === true) {
+                          console.log("if")
                           // console.log("ya existe un dia de descanso")
                           console.log("numeroJefe", localStorage.getItem("numeroEmpleado")),
                             console.log("sucur", empleados[empleadoIndex].sucur),
@@ -515,6 +520,7 @@ console.log("++++++++++++++++++++++++")
 
 
                         } else {
+                          console.log("else")
                           console.log("numeroJefe", localStorage.getItem("numeroEmpleado")),
                             console.log("sucur", empleados[empleadoIndex].sucur),
                             console.log("semanaAconsultar", semanaAConsultar),
@@ -522,7 +528,7 @@ console.log("++++++++++++++++++++++++")
                             console.log("fecha", formatearFecha(day)),
                             console.log("hoini", convertirFormatoHora(hora)),
                             console.log("hofin", convertirFormatoHora(resultTime))
-                          enviarHorario(localStorage.getItem("numeroEmpleado"), empleados[empleadoIndex].sucur, semanaAConsultar, empleados[empleadoIndex].noemp, formatearFecha(day), hora, resultTime)
+                          enviarHorario(localStorage.getItem("numeroEmpleado"), empleados[empleadoIndex].sucur, semanaAConsultar, empleados[empleadoIndex].noemp, formatearFecha(day), convertirFormatoHora(hora), convertirFormatoHora(resultTime))
 
                         }
                         // if (valor == false) {
